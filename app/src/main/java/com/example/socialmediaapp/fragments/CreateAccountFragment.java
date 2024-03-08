@@ -10,13 +10,11 @@ import android.view.ViewGroup;
 
 import com.example.socialmediaapp.R;
 
-
 public class CreateAccountFragment extends Fragment {
 
     public CreateAccountFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
