@@ -17,13 +17,14 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"/>
     <LinearLayout
+        android:id="@+id/ll1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerInParent="true">
         
         <EditText
-            android:id="@+id/NameET"
+            android:id="@+id/nameET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding = "12dp"
@@ -58,6 +59,15 @@
             android:background="@drawable/text_box"
             android:hint="Confirm Password"/>
     </LinearLayout>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/ll1"
+        android:visibility="gone"
+        android:layout_above="@+id/signUpBtn"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signUpBtn"
