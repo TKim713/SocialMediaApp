@@ -40,6 +40,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginFragment extends Fragment {
+    private EditText emailEt, passwordEt;
+    private TextView signUpTv, forgotPasswordTv;
+    private Button loginBtn, googleSignInBtn;
+    private ProgressBar progressBar;
 
     private EditText emailEt, passwordEt;
     private TextView signUpTv, forgotPasswordTv;
