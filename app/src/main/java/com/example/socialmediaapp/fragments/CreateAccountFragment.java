@@ -37,7 +37,8 @@ public class CreateAccountFragment extends Fragment {
     private Button signUpBtn;
     private FirebaseAuth auth;
 
-    public static final String EMAIL_REGEX ="^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
+    //public static final String EMAIL_REGEX ="^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
+    public static final String EMAIL_REGEX ="^(.+)@(.+)$";
 
 
     public CreateAccountFragment() {
@@ -123,7 +124,7 @@ public class CreateAccountFragment extends Fragment {
         });
     }
 
-    private void createAccount(String name, String email, String password) {
+    private void createAccount(final String name, final String email, String password) {
 
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -134,6 +135,15 @@ public class CreateAccountFragment extends Fragment {
 
                             FirebaseUser user = auth.getCurrentUser();
 
+                            user.sendEmailVerification()
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if(task.isSuccessful()){
+                                                        Toast.makeText(getContext(), "Email verification link send", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
                             uploadUser(user, name, email);
 
                         } else {
