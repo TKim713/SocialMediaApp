@@ -50,20 +50,77 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_home_fill);
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+
+                switch (tab.getPosition()) {
+
+                    case 0:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_home_fill);
+                        break;
+                    case 1:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_search);
+                        break;
+                    case 2:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_add);
+                        break;
+                    case 3:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_heart);
+                        break;
+                    case 4:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_heart_fill);
+                        break;
+                }
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
 
+                switch (tab.getPosition()) {
+
+                    case 0:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_home_fill);
+                        break;
+                    case 1:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_search);
+                        break;
+                    case 2:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_add);
+                        break;
+                    case 3:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_heart);
+                        break;
+                    case 4:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_heart_fill);
+                        break;
+                }
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
+                switch (tab.getPosition()) {
+
+                    case 0:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_home_fill);
+                        break;
+                    case 1:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_search);
+                        break;
+                    case 2:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_add);
+                        break;
+                    case 3:
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_heart_fill);
+                        break;
+                    case 4:
+                        tabLayout.getTabAt(0).setIcon(android.R.drawable.ic_menu_help);
+                        break;
+                }
             }
         });
     }

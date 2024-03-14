@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.socialmediaapp.FragmentReplacerActivity;
 import com.example.socialmediaapp.MainActivity;
 import com.example.socialmediaapp.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -131,6 +132,12 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 signIn();
+            }
+        });
+        signUpTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((FragmentReplacerActivity) getActivity()).setFragment(new CreateAccountFragment());
             }
         });
     }
