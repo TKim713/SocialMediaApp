@@ -38,7 +38,12 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_margin="12dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginBottom="24dp"
                 android:background="@drawable/ic_menu"
                 android:contentDescription="@null" />
 
