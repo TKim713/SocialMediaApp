@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,10 +46,6 @@ public class LoginFragment extends Fragment {
     private Button loginBtn, googleSignInBtn;
     private ProgressBar progressBar;
 
-    private EditText emailEt, passwordEt;
-    private TextView signUpTv, forgotPasswordTv;
-    private Button loginBtn, googleSignInBtn;
-    private ProgressBar progressBar;
     private static final int RC_SIGN_IN=1;
     GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth auth;
@@ -138,12 +135,20 @@ public class LoginFragment extends Fragment {
                 signIn();
             }
         });
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
         signUpTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((FragmentReplacerActivity) getActivity()).setFragment(new CreateAccountFragment());
             }
         });
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     }
     private void sendUserToMainActivity()
     {
@@ -206,6 +211,9 @@ public class LoginFragment extends Fragment {
         map.put("email", account.getEmail());
         map.put("profileImage", String.valueOf(account.getPhotoUrl()));
         map.put("uid", user.getUid());
+        map.put("following", 0);
+        map.put("followers", 0);
+        map.put("status", " ")
 
         FirebaseFirestore.getInstance().collection("Users").document(user.getUid())
                 .set(map)

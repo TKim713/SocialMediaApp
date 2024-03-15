@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 
 import com.example.socialmediaapp.R;
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 public class Notification extends Fragment {
 
     public Notification() {
