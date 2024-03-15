@@ -1,23 +1,23 @@
 package com.example.socialmediaapp;
 
+import android.os.Bundle;
+import android.widget.FrameLayout;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Bundle;
-import android.view.Choreographer;
-import android.widget.FrameLayout;
-
 import com.example.socialmediaapp.fragments.CreateAccountFragment;
 import com.example.socialmediaapp.fragments.LoginFragment;
 
-public class FragmentReplacerActivity extends AppCompatActivity {
+public class ReplacerActivity extends AppCompatActivity {
+
     private FrameLayout frameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment_replacer);
+        setContentView(R.layout.activity_replacer);
 
         frameLayout = findViewById(R.id.frameLayout);
 

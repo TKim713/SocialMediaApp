@@ -2,11 +2,6 @@ package com.example.socialmediaapp.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +11,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.socialmediaapp.FragmentReplacerActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.socialmediaapp.MainActivity;
 import com.example.socialmediaapp.R;
+import com.example.socialmediaapp.ReplacerActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -81,7 +80,7 @@ public class CreateAccountFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                ((FragmentReplacerActivity)getActivity()).setFragment(new LoginFragment());
+                ((ReplacerActivity)getActivity()).setFragment(new LoginFragment());
             }
         });
 
