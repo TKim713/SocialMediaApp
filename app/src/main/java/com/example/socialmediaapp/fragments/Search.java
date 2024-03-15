@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.socialmediaapp.R;
 
+
 public class Search extends Fragment {
 
     public Search() {

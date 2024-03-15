@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.example.socialmediaapp.MainActivity;
 import com.example.socialmediaapp.R;
@@ -39,11 +40,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginFragment extends Fragment {
-
     private EditText emailEt, passwordEt;
     private TextView signUpTv, forgotPasswordTv;
     private Button loginBtn, googleSignInBtn;
     private ProgressBar progressBar;
+
     private static final int RC_SIGN_IN=1;
     GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth auth;
@@ -207,6 +208,9 @@ public class LoginFragment extends Fragment {
         map.put("email", account.getEmail());
         map.put("profileImage", String.valueOf(account.getPhotoUrl()));
         map.put("uid", user.getUid());
+        map.put("following", 0);
+        map.put("followers", 0);
+        map.put("status", " ");
 
         FirebaseFirestore.getInstance().collection("Users").document(user.getUid())
                 .set(map)

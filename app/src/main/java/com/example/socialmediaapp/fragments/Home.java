@@ -5,6 +5,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,13 +18,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
 import com.example.socialmediaapp.R;
 import com.example.socialmediaapp.adapter.HomeAdapter;
 import com.example.socialmediaapp.model.HomeModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +44,7 @@ public class Home extends Fragment {
     public Home() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,7 +68,23 @@ public class Home extends Fragment {
         loadDataFromFirestore();
     }
 
-    private void init(View view) {
+
+    private void loadDataFromFirestore()
+    {
+        list.add(new HomeModel("Marsad", "01/11/2020","", "","123456", 12 ));
+        list.add(new HomeModel("Marsad", "01/11/2020","", "","321654", 20 ));
+        list.add(new HomeModel("Marsad", "01/11/2020","", "","452165", 11 ));
+        list.add(new HomeModel("Marsad", "01/11/2020","", "","888811", 5 ));
+
+        adapter.notifyDataSetChanged();
+
+    }
+
+    private void init(View view)
+    {
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        if (getActivity() != null)
+            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -68,7 +94,4 @@ public class Home extends Fragment {
         user = auth.getCurrentUser();
     }
 
-    private void loadDataFromFirestore() {
-
-    }
 }

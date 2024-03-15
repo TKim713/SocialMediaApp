@@ -100,19 +100,19 @@ public class CreateAccountFragment extends Fragment {
 
                 if(email.isEmpty() || !email.matches(EMAIL_REGEX ))
                 {
-                    nameEt.setError("Please input valid email");
+                    emailEt.setError("Please input valid email");
                     return;
                 }
 
                 if(password.isEmpty() || password.length() < 6)
                 {
-                    nameEt.setError("Please input valid password");
+                    passwordEt.setError("Please input valid password");
                     return;
                 }
 
                 if(!password.equals(confirmPassword))
                 {
-                    nameEt.setError("Password not match");
+                    confirmPasswordEt.setError("Password not match");
                     return;
                 }
 
@@ -162,6 +162,10 @@ public class CreateAccountFragment extends Fragment {
         map.put("email", email);
         map.put("profileImage", " ");
         map.put("uid", user.getUid());
+        map.put("following", 0);
+        map.put("followers", 0);
+        map.put("status", " ");
+
 
         FirebaseFirestore.getInstance().collection("Users").document(user.getUid())
                 .set(map)

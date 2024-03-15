@@ -1,4 +1,8 @@
 package com.example.socialmediaapp.model;
+import com.google.firebase.firestore.ServerTimestamp;
+
+import java.util.Date;
+import java.util.List;
 
 public class HomeModel {
 
@@ -48,7 +52,6 @@ public class HomeModel {
     public void setPostImage(String postImage) {
         this.postImage = postImage;
     }
-
     public String getUid() {
         return uid;
     }
@@ -64,4 +67,7 @@ public class HomeModel {
     public void setLikeCount(int likeCount) {
         this.likeCount = likeCount;
     }
+
 }
+
+
