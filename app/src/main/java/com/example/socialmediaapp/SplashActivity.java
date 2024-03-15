@@ -1,10 +1,10 @@
 package com.example.socialmediaapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,7 +23,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if(user==null){
-                    startActivity(new Intent(SplashActivity.this, FragmentReplacerActivity.class));
+                    startActivity(new Intent(SplashActivity.this, ReplacerActivity.class));
                 }
                 else{
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));

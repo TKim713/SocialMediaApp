@@ -4,24 +4,23 @@ import static com.example.socialmediaapp.fragments.CreateAccountFragment.EMAIL_R
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Button;
-import android.widget.Toast;
-
-import com.example.socialmediaapp.FragmentReplacerActivity;
 import com.example.socialmediaapp.MainActivity;
 import com.example.socialmediaapp.R;
+import com.example.socialmediaapp.ReplacerActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -89,6 +88,12 @@ public class LoginFragment extends Fragment {
     }
 
     private void clickListener(){
+        forgotPasswordTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ReplacerActivity) getActivity()).setFragment(new ForgotPassword());
+            }
+        });
         loginBtn.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -137,7 +142,7 @@ public class LoginFragment extends Fragment {
         signUpTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((FragmentReplacerActivity) getActivity()).setFragment(new CreateAccountFragment());
+                ((ReplacerActivity) getActivity()).setFragment(new CreateAccountFragment());
             }
         });
     }

@@ -15,6 +15,9 @@
         android:theme="@style/Theme.SocialMediaApp"
         tools:targetApi="31">
         <activity
+            android:name=".ReplacerActivity"
+            android:exported="false" />
+        <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
@@ -24,9 +27,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FragmentReplacerActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -34,7 +34,6 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
     </application>
 
