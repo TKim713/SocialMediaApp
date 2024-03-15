@@ -10,15 +10,9 @@ import android.view.ViewGroup;
 
 import com.example.socialmediaapp.R;
 
-<<<<<<< Updated upstream
-public class Search extends Fragment {
-
-=======
 
 public class Search extends Fragment {
 
-
->>>>>>> Stashed changes
     public Search() {
         // Required empty public constructor
     }

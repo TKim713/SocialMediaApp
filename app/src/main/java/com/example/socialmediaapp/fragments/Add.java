@@ -12,11 +12,6 @@ import com.example.socialmediaapp.R;
 
 public class Add extends Fragment {
 
-<<<<<<< Updated upstream
-=======
-
-
->>>>>>> Stashed changes
     public Add() {
         // Required empty public constructor
     }

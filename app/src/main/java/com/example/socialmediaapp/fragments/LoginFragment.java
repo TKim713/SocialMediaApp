@@ -135,20 +135,12 @@ public class LoginFragment extends Fragment {
                 signIn();
             }
         });
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
         signUpTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((FragmentReplacerActivity) getActivity()).setFragment(new CreateAccountFragment());
             }
         });
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
     }
     private void sendUserToMainActivity()
     {
@@ -213,7 +205,7 @@ public class LoginFragment extends Fragment {
         map.put("uid", user.getUid());
         map.put("following", 0);
         map.put("followers", 0);
-        map.put("status", " ")
+        map.put("status", " ");
 
         FirebaseFirestore.getInstance().collection("Users").document(user.getUid())
                 .set(map)

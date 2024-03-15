@@ -2,26 +2,21 @@ package com.example.socialmediaapp.fragments;
 
 import android.os.Bundle;
 
-<<<<<<< Updated upstream
 import androidx.fragment.app.Fragment;
-=======
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
->>>>>>> Stashed changes
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-<<<<<<< Updated upstream
 
+import com.bumptech.glide.Glide;
 import com.example.socialmediaapp.R;
 
-public class Profile extends Fragment {
-=======
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -48,24 +43,17 @@ public class Profile extends Fragment {
 
     private FirebaseUser user;
 
->>>>>>> Stashed changes
 
     public Profile() {
         // Required empty public constructor
     }
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
-<<<<<<< Updated upstream
-=======
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -102,6 +90,8 @@ public class Profile extends Fragment {
                     followersCountTv.setText(String.valueOf(followers));
                     followingCountTv.setText(String.valueOf(following));
 
+
+
                     Glide.with(getContext().getApplicationContext())
                             .load(profileURL)
                             .placeholder(R.drawable.ic_person)
@@ -131,5 +121,4 @@ public class Profile extends Fragment {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         user  = auth.getCurrentUser();
     }
->>>>>>> Stashed changes
 }
