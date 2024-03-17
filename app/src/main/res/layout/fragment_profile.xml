@@ -118,7 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -203,39 +203,17 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/followBtn"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/countLayout"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/btn_bg"
+            android:visibility="gone"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="12dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/startChatBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
-                android:background="@drawable/btn_bg"
-                android:minWidth="160dp"
-                android:text="Say Hi !"
-                android:textColor="@android:color/white"
-                android:visibility="gone" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/followBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:background="@drawable/btn_bg"
-                android:minWidth="160dp"
-                android:text="Follow"
-                android:textColor="@android:color/white"
-                android:visibility="visible" />
-
-        </LinearLayout>
+            android:minWidth="160dp"
+            android:text="Follow"
+            android:textColor="@android:color/white"/>
 
 
     </RelativeLayout>
