@@ -1,9 +1,15 @@
 package com.example.socialmediaapp.fragments;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -21,6 +27,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.canhub.cropper.CropImage;
+import com.canhub.cropper.CropImageContract;
+import com.canhub.cropper.CropImageContractOptions;
+import com.canhub.cropper.CropImageOptions;
 import com.example.socialmediaapp.R;
 import com.example.socialmediaapp.adapter.GalleryAdapter;
 import com.example.socialmediaapp.model.GalleryImages;
@@ -90,17 +100,35 @@ public class Add extends Fragment {
 
     private void clickListener() {
 
+        /* Nguyên hàm SendImage do dùng Dependency khác nên phải làm cách khác
+         * Không biết đúng hay sai nên tạm để đó có gì test sau
+         */
         adapter.SendImage(new GalleryAdapter.SendImage() {
             @Override
             public void onSend(Uri picUri) {
                 imageUri = picUri;
 
-                Glide.with(getContext())
-                        .load(picUri)
-                        .into(imageView);
-
-                imageView.setVisibility(View.VISIBLE);
-                nextBtn.setVisibility(View.VISIBLE);
+                ActivityResultLauncher<Intent> getImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null && data.getData() != null) {
+                            Uri imageUri = data.getData();
+                            launchImageCropper(imageUri);
+                        }
+                    }
+                });
+            }
+            ActivityResultLauncher<CropImageContractOptions> cropImage = registerForActivityResult(new CropImageContract(), result -> {
+                if (result.isSuccessful()) {
+                    Bitmap cropped = BitmapFactory.decodeFile(result.getUriFilePath(getContext(), true));
+                }
+            });
+            private void launchImageCropper(Uri uri) {
+                CropImageOptions cropImageOptions = new CropImageOptions();
+                cropImageOptions.imageSourceIncludeGallery = false;
+                cropImageOptions.imageSourceIncludeCamera = true;
+                CropImageContractOptions cropImageContractOptions = new CropImageContractOptions(uri, cropImageOptions);
+                cropImage.launch(cropImageContractOptions);
             }
         });
 
@@ -143,6 +171,10 @@ public class Add extends Fragment {
         map.put("description", description);
         map.put("imageUrl", imageURL);
         map.put("timestamp", FieldValue.serverTimestamp());
+
+        map.put("userName", user.getDisplayName());
+        map.put("profileImage", String.valueOf(user.getPhotoUrl()));
+        map.put("likeCount", 0);
 
         reference.document(id).set(map)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

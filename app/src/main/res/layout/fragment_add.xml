@@ -4,60 +4,85 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp"
+    tools:ignore="UnusedAttribute"
+    tools:targetApi="m"
     tools:context=".fragments.Add">
     
     <RelativeLayout
         android:id="@+id/layout"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="wrap_content">
 
         <ImageButton
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:background="@drawable/ic_back"
-            android:id="@+id/backBtn"/>
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:padding="4dp"
+            android:layout_margin="4dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:elevation="3dp"
+            android:background="@drawable/ic_circle"
+            android:src="@drawable/ic_back"
+            android:id="@+id/backBtn" />
 
         <ImageButton
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:background="@drawable/ic_next"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:padding="4dp"
+            android:layout_margin="4dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:elevation="3dp"
+            android:background="@drawable/ic_circle"
+            android:src="@drawable/ic_next"
             android:layout_alignParentEnd="true"
             android:id="@+id/nextBtn"
             android:visibility="gone"/>
 
     </RelativeLayout>
 
-    <EditText
+    <ScrollView
         android:layout_below="@+id/layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/descriptionET"
-        android:background="@android:color/transparent"
-        android:hint="Add Something About This Post"
-        android:minLines="12"/>
+        android:layout_height="match_parent">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_margin="6dp"
-        android:background="#000"
-        android:layout_below="@+id/descriptionET"
-        android:id="@+id/view"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/descriptionET"
+                android:background="@android:color/transparent"
+                android:hint="Add Something About This Post"
+                android:minLines="12"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="6dp"
+                android:background="#000"
+                android:layout_below="@+id/descriptionET"
+                android:id="@+id/view"/>
     
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:id="@+id/imageView"
-        android:visibility="gone"
-        android:contentDescription="@null"
-        android:layout_below="@+id/view"
-        android:background="@color/colorAccent"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                android:id="@+id/imageView"
+                android:visibility="gone"
+                android:contentDescription="@null"
+                android:layout_below="@+id/view"
+                android:background="@color/colorAccent"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
-        android:id="@+id/recyclerView"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageView"
+                android:id="@+id/recyclerView"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </RelativeLayout>
