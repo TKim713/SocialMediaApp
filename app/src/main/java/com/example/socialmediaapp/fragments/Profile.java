@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.example.socialmediaapp.R;
 
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -52,8 +53,10 @@ public class Profile extends Fragment {
     private RecyclerView recyclerView;
     private LinearLayout countLayout;
     private FirebaseUser user;
+    private ImageButton editProfileBtn;
 
     boolean isMyProfile = true;
+
     String uid;
 
     FirestoreRecyclerAdapter<PostImageModel, PostImageHolder> adapter;
@@ -147,8 +150,8 @@ public class Profile extends Fragment {
         profileImage = view.findViewById(R.id.profileImage);
         followBtn = view.findViewById(R.id.followBtn);
         recyclerView = view.findViewById(R.id.recyclerView);
-        countLayout = view.findViewById(R.id.recyclerView);
         countLayout = view.findViewById(R.id.countLayout);
+        editProfileBtn= view.findViewById(R.id.edit_profileImage);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         user  = auth.getCurrentUser();

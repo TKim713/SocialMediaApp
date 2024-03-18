@@ -6,18 +6,20 @@ import java.util.List;
 
 public class HomeModel {
 
-    private String userName, timestamp, profileImage, postImage, uid;
+    private String userName, timestamp, profileImage, postImage, uid, comment, description;
     private int likeCount;
 
     public HomeModel() {
     }
 
-    public HomeModel(String userName, String timestamp, String profileImage, String postImage, String uid, int likeCount) {
+    public HomeModel(String userName, String timestamp, String profileImage, String postImage, String uid, String comment, String description, int likeCount) {
         this.userName = userName;
         this.timestamp = timestamp;
         this.profileImage = profileImage;
         this.postImage = postImage;
         this.uid = uid;
+        this.comment = comment;
+        this.description = description;
         this.likeCount = likeCount;
     }
 
@@ -52,12 +54,29 @@ public class HomeModel {
     public void setPostImage(String postImage) {
         this.postImage = postImage;
     }
+
     public String getUid() {
         return uid;
     }
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getLikeCount() {
@@ -67,7 +86,6 @@ public class HomeModel {
     public void setLikeCount(int likeCount) {
         this.likeCount = likeCount;
     }
-
 }
 
 

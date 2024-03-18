@@ -2,6 +2,11 @@ package com.example.socialmediaapp.fragments;
 
 import android.Manifest;
 import android.net.Uri;
+import static android.app.Activity.RESULT_OK;
+import static com.bumptech.glide.Glide.init;
+
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -49,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Add extends Fragment {
+    Uri imageUri;
 
     private EditText descET;
     private ImageView imageView;
@@ -60,6 +66,7 @@ public class Add extends Fragment {
 
     Uri imageUri;
 
+    Dialog dialog;
     public Add() {
         // Required empty public constructor
     }
@@ -70,122 +77,24 @@ public class Add extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add, container, false);
     }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        init(view);
-
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        recyclerView.setHasFixedSize(true);
-
-        list = new ArrayList<>();
-        adapter = new GalleryAdapter(list);
-
-        recyclerView.setAdapter(adapter);
-
-        clickListener();
-    }
-
-    private void clickListener() {
-
-        adapter.SendImage(new GalleryAdapter.SendImage() {
-            @Override
-            public void onSend(Uri picUri) {
-                imageUri = picUri;
-
-                Glide.with(getContext())
-                        .load(picUri)
-                        .into(imageView);
-
-                imageView.setVisibility(View.VISIBLE);
-                nextBtn.setVisibility(View.VISIBLE);
-            }
-        });
-
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference storageReference = storage.getReference().child("Post Images/" + System.currentTimeMillis());
-
-                storageReference.putFile(imageUri)
-                        .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                if (task.isSuccessful()) {
-
-                                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
-                                            uploadData(uri.toString());
-                                        }
-                                    });
-                                }
-                            }
-                        });
-            }
-        });
-    }
-
-    private void uploadData(String imageURL) {
-
-        CollectionReference reference = FirebaseFirestore.getInstance().collection("Users")
-                .document(user.getUid()).collection("Post Images");
-
-        String id = reference.document().getId();
-        String description = descET.getText().toString();
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("id", id);
-        map.put("description", description);
-        map.put("imageUrl", imageURL);
-        map.put("timestamp", FieldValue.serverTimestamp());
-
-        reference.document(id).set(map)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            System.out.println();
-                        }else {
-                            Toast.makeText(getContext(), "Error: " + task.getException().getMessage(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    private void init(View view) {
-        descET = view.findViewById(R.id.descriptionET);
-        imageView = view.findViewById(R.id.imageView);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        backBtn = view.findViewById(R.id.backBtn);
-        nextBtn = view.findViewById(R.id.nextBtn);
-
-        user = FirebaseAuth.getInstance().getCurrentUser();
-    }
-
     @Override
     public void onResume() {
         super.onResume();
-
         getActivity().runOnUiThread(new Runnable() {
+
             @Override
             public void run() {
 
                 Dexter.withContext(getContext())
                         .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                 Manifest.permission.READ_EXTERNAL_STORAGE)
-                        .withListener(new MultiplePermissionsListener() {
                             @Override
+                        .withListener(new MultiplePermissionsListener() {
                             public void onPermissionsChecked(MultiplePermissionsReport report) {
 
                                 if (report.areAllPermissionsGranted()) {
-                                    File file = new File(Environment.getExternalStorageDirectory().toString() + "/Download");
 
+                                    File file = new File(Environment.getExternalStorageDirectory().toString() + "/Download");
                                     if (file.exists()) {
                                         File[] files = file.listFiles();
 
@@ -199,13 +108,113 @@ public class Add extends Fragment {
                                     }
                                 }
                             }
+    private void init(View view) {
+        descET = view.findViewById(R.id.descriptionET);
+        imageView = view.findViewById(R.id.imageView);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        backBtn = view.findViewById(R.id.backBtn);
+        nextBtn = view.findViewById(R.id.nextBtn);
 
-                            @Override
-                            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
-
-                            }
-                        }).check();
-            }
-        });
+        user = FirebaseAuth.getInstance().getCurrentUser();
     }
+
+    private void clickListener() {
+
+        adapter.SendImage(new GalleryAdapter.SendImage() {
+            @Override
+            public void onSend(Uri picUri) {
+                imageUri = picUri;
+
+            CropImage.activity(picUri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(4, 3)
+                    .start(getContext(), Add.this);
+        });
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            final StorageReference storageReference = storage.getReference().child("Post Images/" + System.currentTimeMillis());
+            dialog.show();
+
+
+            storageReference.putFile(imageUri)
+                        .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            storageReference.getDownloadUrl().addOnSuccessListener(uri -> uploadData(uri.toString()));
+                        } else {
+                            dialog.dismiss();
+                            Toast.makeText(getContext(), "Failed to upload post", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+        });
+        private void uploadData (String imageURL)
+        {
+            CollectionReference reference = FirebaseFirestore.getInstance().collection("Users")
+                    .document(user.getUid()).collection("Post Images");
+
+            String id = reference.document().getId();
+
+            String description = descET.getText().toString();
+
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", id);
+            map.put("description", description);
+            map.put("imageUrl", imageURL);
+
+            map.put("timestamp", FieldValue.serverTimestamp());
+
+            map.put("userName", user.getDisplayName());
+            map.put("profileImage", String.valueOf(user.getPhotoUrl()));
+            map.put("likeCount", 0);
+
+
+
+            reference.document(id).set(map)
+
+
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()) {
+                                System.out.println();
+                            } else {
+                            Toast.makeText(getContext(), "Error: " + task.getException().getMessage(),
+                                    Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+        });
+
+        }
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+        {
+            super.onActivityResult(requestCode, resultCode, data);
+
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
+            {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if(resultCode == RESULT_OK)
+                {
+                    Uri image = result.getUri();
+                    Glide.with(getContext())
+                            .load(image)
+                            .into(imageView);
+                    imageView.setVisibility(View.VISIBLE);
+                }
+                    nextBtn.setVisibility(View.VISIBLE);
+            }
+
+
+        }
+    }
+
+
+
 }
