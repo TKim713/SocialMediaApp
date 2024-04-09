@@ -1,27 +1,26 @@
 package com.example.socialmediaapp.adapter;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
-import com.example.socialmediaapp.R;
 import com.example.socialmediaapp.model.GalleryImages;
+import com.marsad.catchy.R;
 
 import java.util.List;
 
-public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryHolder> {
-
-    private List<GalleryImages> list;
+public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryHolder>  {
 
     SendImage onSendImage;
+    List<GalleryImages> list;
 
     public GalleryAdapter(List<GalleryImages> list) {
         this.list = list;
@@ -35,50 +34,46 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryH
         return new GalleryHolder(view);
     }
 
+
     @Override
-    public void onBindViewHolder(@NonNull GalleryHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull GalleryHolder holder, int position) {
 
         Glide.with(holder.itemView.getContext().getApplicationContext())
-                        .load(list.get(position).getPicUri())
-                        .into(holder.imageView);
+                .load(list.get(position).getPicUri())
+                .into(holder.imageView);
 
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.imageView.setOnClickListener(v -> chooseImage(list.get(holder.getAbsoluteAdapterPosition()).getPicUri()));
 
-                /* Video gốc dùng position thay vì holder.getAbsoluteAdapterPosition().
-                 * Nhưng dùng position thì hàm này bị lỗi
-                 * Note lại để tiện theo dõi nếu chạy không được
-                 */
-                chooseImage(list.get(holder.getAbsoluteAdapterPosition()).getPicUri());
-            }
-        });
     }
 
     private void chooseImage(Uri picUri) {
 
         onSendImage.onSend(picUri);
+
     }
+
 
     @Override
     public int getItemCount() {
         return list.size();
     }
 
-    class GalleryHolder extends RecyclerView.ViewHolder {
-
-        private ImageView imageView;
-        public GalleryHolder(@NonNull View itemView) {
-            super(itemView);
-            imageView = itemView.findViewById(R.id.imageView);
-        }
+    public void SendImage(SendImage sendImage) {
+        this.onSendImage = sendImage;
     }
 
     public interface SendImage {
         void onSend(Uri picUri);
     }
 
-    public void SendImage(SendImage sendImage) {
-        this.onSendImage = sendImage;
+    static class GalleryHolder extends RecyclerView.ViewHolder {
+
+        ImageView imageView;
+
+        public GalleryHolder(@NonNull View itemView) {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.imageView);
+
+        }
     }
 }

@@ -4,6 +4,11 @@ import static com.example.socialmediaapp.fragments.CreateAccountFragment.EMAIL_R
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-
 import com.example.socialmediaapp.MainActivity;
-import com.example.socialmediaapp.R;
 import com.example.socialmediaapp.ReplacerActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -35,19 +34,25 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.marsad.catchy.R;
 
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class LoginFragment extends Fragment {
+
     private EditText emailEt, passwordEt;
     private TextView signUpTv, forgotPasswordTv;
     private Button loginBtn, googleSignInBtn;
     private ProgressBar progressBar;
 
-    private static final int RC_SIGN_IN=1;
+    private static final int RC_SIGN_IN = 1;
     GoogleSignInClient mGoogleSignInClient;
+
     private FirebaseAuth auth;
+
+
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -66,10 +71,11 @@ public class LoginFragment extends Fragment {
         init(view);
 
         clickListener();
+
     }
 
-    private void init(View view)
-    {
+    private void init(View view) {
+
         emailEt = view.findViewById(R.id.emailET);
         passwordEt = view.findViewById(R.id.passwordET);
         loginBtn = view.findViewById(R.id.loginBtn);
@@ -78,7 +84,8 @@ public class LoginFragment extends Fragment {
         forgotPasswordTv = view.findViewById(R.id.forgotTV);
         progressBar = view.findViewById(R.id.progressBar);
 
-        auth=FirebaseAuth.getInstance();
+
+        auth = FirebaseAuth.getInstance();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -86,29 +93,33 @@ public class LoginFragment extends Fragment {
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
+
     }
 
-    private void clickListener(){
+    private void clickListener() {
+
         forgotPasswordTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((ReplacerActivity) getActivity()).setFragment(new ForgotPassword());
             }
         });
-        loginBtn.setOnClickListener(new View.OnClickListener(){
 
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String email = emailEt.getText().toString();
                 String password = passwordEt.getText().toString();
 
-                if(email.isEmpty() || !email.matches(EMAIL_REGEX)){
+                if (email.isEmpty() || !email.matches(EMAIL_REGEX)) {
                     emailEt.setError("Input valid email");
                     return;
                 }
 
-                if(password.isEmpty() || password.length()<6){
-                    passwordEt.setError("Input 6 digit valid password");
+                if (password.isEmpty() || password.length() < 6) {
+                    passwordEt.setError("Input 6 digit valid password ");
                     return;
                 }
                 progressBar.setVisibility(View.VISIBLE);
@@ -116,40 +127,48 @@ public class LoginFragment extends Fragment {
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful()){
+
+                                if (task.isSuccessful()) {
+
                                     FirebaseUser user = auth.getCurrentUser();
-                                    if(!user.isEmailVerified()){
+
+                                    if (!user.isEmailVerified()) {
                                         Toast.makeText(getContext(), "Please verify your email", Toast.LENGTH_SHORT).show();
                                     }
 
                                     sendUserToMainActivity();
-                                }
-                                else{
-                                    String exception = task.getException().getMessage();
+
+                                } else {
+                                    String exception = "Error: " + task.getException().getMessage();
                                     Toast.makeText(getContext(), exception, Toast.LENGTH_SHORT).show();
                                     progressBar.setVisibility(View.GONE);
                                 }
+
                             }
                         });
+
             }
         });
-        googleSignInBtn.setOnClickListener(new View.OnClickListener(){
 
+        googleSignInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signIn();
             }
         });
+
         signUpTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((ReplacerActivity) getActivity()).setFragment(new CreateAccountFragment());
             }
         });
+
     }
-    private void sendUserToMainActivity()
-    {
-        if(getActivity()==null)
+
+    private void sendUserToMainActivity() {
+
+        if (getActivity() == null)
             return;
 
         progressBar.setVisibility(View.GONE);
@@ -181,6 +200,7 @@ public class LoginFragment extends Fragment {
             }
         }
     }
+
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         auth.signInWithCredential(credential)
@@ -200,8 +220,11 @@ public class LoginFragment extends Fragment {
                 });
 
     }
-    private void updateUi(FirebaseUser user){
+
+    private void updateUi(FirebaseUser user) {
+
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getActivity());
+
         Map<String, Object> map = new HashMap<>();
 
         map.put("name", account.getDisplayName());
@@ -222,12 +245,16 @@ public class LoginFragment extends Fragment {
                             assert getActivity() != null;
                             progressBar.setVisibility(View.GONE);
                             sendUserToMainActivity();
+
                         } else {
                             progressBar.setVisibility(View.GONE);
                             Toast.makeText(getContext(), "Error: " + task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
+
                     }
                 });
+
+
     }
 }

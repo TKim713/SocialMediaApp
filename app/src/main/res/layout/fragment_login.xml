@@ -4,97 +4,100 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_background"
-    tools:context=".fragments.CreateAccountFragment">
+    tools:context="com.example.socialmediaapp.fragments.LoginFragment">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="24sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="78dp"
         android:text="Login"
         android:textColor="@color/colorGreen"
-        android:layout_marginTop="78dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"/>
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
     <LinearLayout
         android:id="@+id/ll1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerInParent="true">
-
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/emailET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding = "12dp"
             android:layout_margin="8dp"
             android:background="@drawable/text_box"
-            android:hint="Email"/>
+            android:hint="Email"
+            android:padding="12dp" />
 
         <EditText
             android:id="@+id/passwordET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding = "12dp"
             android:layout_margin="8dp"
             android:background="@drawable/text_box"
-            android:hint="Password"/>
-        
+            android:hint="Password"
+            android:padding="12dp" />
+
         <TextView
+            android:id="@+id/forgotTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:text="Forgot Password"
             android:textColor="@color/colorGreen"
-            android:layout_gravity="end"
-            android:textStyle="bold"
-            android:layout_marginEnd="16dp"
-            android:id="@+id/forgotTV"
-            android:layout_marginRight="16dp"/>
-
+            android:textStyle="bold" />
 
     </LinearLayout>
+
     <ProgressBar
-        android:layout_centerHorizontal="true"
-        android:visibility="gone"
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
+        android:layout_above="@id/loginBtn"
         android:layout_below="@id/ll1"
-        android:layout_above="@id/loginBtn"/>
-    <androidx.appcompat.widget.AppCompatButton
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
+
+    <Button
         android:id="@+id/loginBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/googleSignInBtn"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
+        android:layout_marginBottom="18dp"
         android:background="@drawable/btn_bg"
         android:text="Sign In"
-        android:layout_above="@+id/googleSignInBtn"
-        android:layout_marginBottom="18dp"
         android:textColor="#fff" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/googleSignInBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/signUpTV"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
+        android:layout_marginBottom="18dp"
         android:background="@drawable/btn_bg"
         android:text="Sign In with Google"
-        android:layout_above="@+id/signUpTV"
-        android:layout_marginBottom="18dp"
         android:textColor="#fff" />
 
+
     <TextView
+        android:id="@+id/signUpTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/signUpTV"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="26dp"
-        android:text="Create Account, SignUp"
-        android:textStyle="bold"
-        android:textColor="@color/colorGreen"/>
+        android:text="Create Account, Sign Up"
+        android:textColor="@color/colorGreen"
+        android:textStyle="bold" />
+
 </RelativeLayout>

@@ -4,46 +4,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp"
-    tools:ignore="UnuseAttribute"
-    tools:targetApi="m"
-    tools:context=".fragments.Add">
-    
-    <RelativeLayout
-        android:id="@+id/layout"
-        android:gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+    tools:context=".fragments.Add"
+    tools:ignore="UnusedAttribute"
+    tools:targetApi="m">
 
     <RelativeLayout
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="2dp"
         android:gravity="center_vertical">
 
         <ImageButton
             android:id="@+id/backBtn"
             android:layout_width="34dp"
-            android:padding="4dp"
-            android:foreground="?attr/selectableItemBackground"
             android:layout_height="34dp"
             android:layout_margin="4dp"
-            android:elevation="3dp"
             android:background="@drawable/ic_circle"
-            android:src="@drawable/ic_back"/>
+            android:elevation="3dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="4dp"
+            android:src="@drawable/ic_back" />
+
         <ImageButton
             android:id="@+id/nextBtn"
             android:layout_width="34dp"
-            android:padding="4dp"
             android:layout_height="34dp"
-            android:elevation="3dp"
-            android:foreground="?attr/selectableItemBackground"
             android:layout_alignParentEnd="true"
-            android:background="@drawable/ic_circle"
             android:layout_alignParentRight="true"
             android:layout_margin="4dp"
+            android:background="@drawable/ic_circle"
+            android:elevation="3dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="4dp"
             android:src="@drawable/ic_next"
-            android:visibility="gone"/>
+            android:visibility="gone" />
+
     </RelativeLayout>
 
     <ScrollView
@@ -53,7 +48,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/descriptionET"
@@ -75,10 +70,10 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:scaleType="centerCrop"
                 android:layout_below="@id/view"
                 android:background="@color/colorAccent"
                 android:contentDescription="@null"
+                android:scaleType="centerCrop"
                 android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -90,6 +85,5 @@
         </RelativeLayout>
 
     </ScrollView>
-
 
 </RelativeLayout>

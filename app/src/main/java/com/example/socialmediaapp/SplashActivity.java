@@ -1,13 +1,14 @@
 package com.example.socialmediaapp;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.marsad.catchy.R;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -17,18 +18,21 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseUser user = auth.getCurrentUser();
+        final FirebaseUser user = auth.getCurrentUser();
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(user==null){
+
+                if (user == null) {
                     startActivity(new Intent(SplashActivity.this, ReplacerActivity.class));
-                }
-                else{
+
+                } else {
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
+
                 }
                 finish();
+
             }
         }, 2500);
     }

@@ -11,6 +11,7 @@ public class GalleryImages {
 
     public GalleryImages(Uri picUri) {
         this.picUri = picUri;
+
     }
 
     public Uri getPicUri() {
@@ -20,4 +21,5 @@ public class GalleryImages {
     public void setPicUri(Uri picUri) {
         this.picUri = picUri;
     }
+
 }

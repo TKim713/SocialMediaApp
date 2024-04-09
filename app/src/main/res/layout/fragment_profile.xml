@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.Profile">
+    tools:context="com.example.socialmediaapp.fragments.Profile">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -38,12 +37,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="12dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginRight="24dp"
-                android:layout_marginBottom="24dp"
+                android:layout_margin="12dp"
                 android:background="@drawable/ic_menu"
                 android:contentDescription="@null" />
 
@@ -59,7 +53,7 @@
         android:orientation="horizontal">
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="100dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -72,15 +66,17 @@
                 app:civ_border_width="1dp" />
 
             <ImageButton
+                android:id="@+id/edit_profileImage"
                 android:layout_width="34dp"
                 android:layout_height="34dp"
-                android:src="@drawable/ic_edit"
                 android:layout_alignEnd="@id/profileImage"
+                android:layout_alignRight="@id/profileImage"
                 android:layout_alignBottom="@id/profileImage"
                 android:background="@drawable/ic_circle"
                 android:elevation="3dp"
-                android:id="@+id/edit_profileImage"
-                android:layout_alignRight="@id/profileImage"/>
+                android:src="@drawable/ic_edit"
+                android:visibility="gone" />
+
         </RelativeLayout>
 
         <LinearLayout
@@ -212,17 +208,39 @@
 
         </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/followBtn"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:background="@drawable/btn_bg"
-            android:visibility="gone"
+            android:layout_below="@id/countLayout"
             android:layout_centerHorizontal="true"
-            android:minWidth="160dp"
-            android:text="Follow"
-            android:textColor="@android:color/white"/>
+            android:layout_marginTop="12dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/startChatBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/btn_bg"
+                android:minWidth="160dp"
+                android:text="Say Hi !"
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/followBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:background="@drawable/btn_bg"
+                android:minWidth="160dp"
+                android:text="Follow"
+                android:textColor="@android:color/white"
+                android:visibility="visible" />
+
+        </LinearLayout>
 
 
     </RelativeLayout>
@@ -242,6 +260,4 @@
         android:layout_height="match_parent"
         android:layout_below="@id/view" />
 
-
 </RelativeLayout>
-

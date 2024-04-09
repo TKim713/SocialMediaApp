@@ -3,6 +3,11 @@ package com.example.socialmediaapp.fragments;
 import static com.example.socialmediaapp.fragments.CreateAccountFragment.EMAIL_REGEX;
 
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,22 +17,23 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import com.example.socialmediaapp.R;
 import com.example.socialmediaapp.ReplacerActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.marsad.catchy.R;
+
 
 public class ForgotPassword extends Fragment {
-    private TextView loginTV;
+
+    private TextView loginTv;
     private Button recoverBtn;
     private EditText emailEt;
+
     private FirebaseAuth auth;
+
     private ProgressBar progressBar;
+
     public ForgotPassword() {
         // Required empty public constructor
     }
@@ -46,21 +52,36 @@ public class ForgotPassword extends Fragment {
         init(view);
 
         clickListener();
+
     }
 
-    private void clickListener() {
-        loginTV.setOnClickListener(new View.OnClickListener() {
+    private void init(View view){
+
+        loginTv = view.findViewById(R.id.loginTV);
+        emailEt = view.findViewById(R.id.emailET);
+        recoverBtn = view.findViewById(R.id.recoverBtn);
+        progressBar = view.findViewById(R.id.progressBar);
+
+        auth = FirebaseAuth.getInstance();
+
+    }
+
+    private void clickListener(){
+
+        loginTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((ReplacerActivity) getActivity()).setFragment((new LoginFragment()));
+                ((ReplacerActivity) getActivity()).setFragment(new LoginFragment());
             }
         });
+
         recoverBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String email = emailEt.getText().toString();
 
-                if(email.isEmpty() || !email.matches(EMAIL_REGEX)){
+                if (email.isEmpty() || !email.matches(EMAIL_REGEX)){
                     emailEt.setError("Input valid email");
                     return;
                 }
@@ -71,27 +92,24 @@ public class ForgotPassword extends Fragment {
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()){
-                                    Toast.makeText(getContext(), "Password reset email send successfully", Toast.LENGTH_SHORT).show();
+
+                                if (task.isSuccessful()){
+                                    Toast.makeText(getContext(), "Password reset email send successfully",
+                                            Toast.LENGTH_SHORT).show();
                                     emailEt.setText("");
-                                }else{
-                                    String errMsg=task.getException().getMessage();
+                                }else {
+                                    String errMsg = task.getException().getMessage();
                                     Toast.makeText(getContext(), "Error: "+errMsg, Toast.LENGTH_SHORT).show();
                                 }
 
                                 progressBar.setVisibility(View.GONE);
+
                             }
                         });
+
+
             }
         });
-    }
 
-    private void init(View view) {
-        loginTV = view.findViewById(R.id.loginTV);
-        recoverBtn = view.findViewById(R.id.recoverBtn);
-        emailEt = view.findViewById(R.id.emailET);
-        progressBar = view.findViewById(R.id.progressBar);
-
-        auth = FirebaseAuth.getInstance();
     }
 }
