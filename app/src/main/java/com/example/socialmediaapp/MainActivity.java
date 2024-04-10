@@ -19,7 +19,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.marsad.catchy.R;
+import com.example.socialmediaapp.R;
 
 import java.io.File;
 import java.io.FileInputStream;

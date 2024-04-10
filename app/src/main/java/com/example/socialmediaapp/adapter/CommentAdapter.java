@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.socialmediaapp.model.CommentModel;
-import com.marsad.catchy.R;
+import com.example.socialmediaapp.R;
 
 import java.util.List;
 

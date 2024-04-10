@@ -20,7 +20,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.marsad.catchy.R;
+import com.example.socialmediaapp.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;

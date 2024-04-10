@@ -21,8 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.marsad.catchy.R;
-
+import com.example.socialmediaapp.R;
 import java.util.Date;
 import java.util.List;
 

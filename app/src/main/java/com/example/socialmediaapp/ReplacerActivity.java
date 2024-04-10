@@ -10,7 +10,7 @@ import android.widget.FrameLayout;
 import com.example.socialmediaapp.fragments.Comment;
 import com.example.socialmediaapp.fragments.CreateAccountFragment;
 import com.example.socialmediaapp.fragments.LoginFragment;
-import com.marsad.catchy.R;
+import com.example.socialmediaapp.R;
 
 public class ReplacerActivity extends AppCompatActivity {
     private FrameLayout frameLayout;

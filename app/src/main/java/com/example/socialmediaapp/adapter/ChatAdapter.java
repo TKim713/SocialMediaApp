@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.example.socialmediaapp.model.ChatModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.marsad.catchy.R;
+import com.example.socialmediaapp.R;
 
 import java.util.List;
 

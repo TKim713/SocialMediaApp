@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 32
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.marsad.catchy"
+        applicationId "com.example.socialmediaapp"
         minSdkVersion 19
         targetSdkVersion 33
         multiDexEnabled true
@@ -27,7 +27,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    namespace 'com.marsad.catchy'
+    namespace 'com.example.socialmediaapp'
 
 }
 

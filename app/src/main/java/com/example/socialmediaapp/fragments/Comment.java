@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.marsad.catchy.R;
+import com.example.socialmediaapp.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;

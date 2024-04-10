@@ -21,7 +21,7 @@ import com.example.socialmediaapp.ReplacerActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.marsad.catchy.R;
+import com.example.socialmediaapp.R;
 
 
 public class ForgotPassword extends Fragment {

@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.marsad.catchy.R;
+import com.example.socialmediaapp.R;
 
 public class ViewStoryActivity extends AppCompatActivity {
 

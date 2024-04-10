@@ -13,7 +13,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.socialmediaapp.model.GalleryImages;
-import com.marsad.catchy.R;
+import com.example.socialmediaapp.R;
 
 import java.util.List;
 

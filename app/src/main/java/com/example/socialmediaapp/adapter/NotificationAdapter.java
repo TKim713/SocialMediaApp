@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.socialmediaapp.model.NotificationModel;
-import com.marsad.catchy.R;
+import com.example.socialmediaapp.R;
 
 import java.util.Date;
 import java.util.List;

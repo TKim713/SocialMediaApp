@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
-import com.marsad.catchy.R;
+import com.example.socialmediaapp.R;
 
 public class PostViewActivity extends AppCompatActivity {
 

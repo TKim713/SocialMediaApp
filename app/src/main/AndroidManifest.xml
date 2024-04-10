@@ -22,66 +22,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.example.socialmediaapp.fragments.CreateAccountFragment"
-            android:exported="false"
-            tools:ignore="Instantiatable" />
-        <activity
-            android:name="com.example.socialmediaapp.fragments.Comment"
-            android:exported="false"
-            tools:ignore="Instantiatable" />
-        <activity
-            android:name="com.example.socialmediaapp.fragments.Add"
-            android:exported="false"
-            tools:ignore="Instantiatable" />
-        <activity
             android:name="com.example.socialmediaapp.chat.ChatUserActivity"
             android:exported="true" />
         <activity
             android:name="com.example.socialmediaapp.chat.ChatActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.socialmediaapp.adapter.UserAdapter"
-            android:exported="false" />
-        <activity
-            android:name="com.example.socialmediaapp.adapter.StoriesAdapter"
-            android:exported="false" />
-        <activity
-            android:name="com.example.socialmediaapp.adapter.NotificationAdapter"
-            android:exported="false" />
-        <activity
-            android:name="com.example.socialmediaapp.adapter.HomeAdapter"
-            android:exported="false" />
-        <activity
-            android:name="com.example.socialmediaapp.adapter.GalleryAdapter"
-            android:exported="false" />
-        <activity
-            android:name="com.example.socialmediaapp.adapter.CommentAdapter"
-            android:exported="false" />
-        <activity
-            android:name="com.example.socialmediaapp.adapter.ChatUserAdapter"
-            android:exported="false" />
-        <activity
-            android:name="com.example.socialmediaapp.adapter.ChatAdapter"
-            android:exported="false"
-            tools:ignore="Instantiatable" />
-        <activity
             android:name="com.example.socialmediaapp.ViewStoryActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.socialmediaapp.StoryAddActivity"
-            android:exported="false" />
+            android:name="com.example.socialmediaapp.StoryAddActivity"/>
         <activity
-            android:name="com.example.socialmediaapp.SplashActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.example.socialmediaapp.ReplacerActivity"
-            android:exported="false" />
+            android:name="com.example.socialmediaapp.ReplacerActivity"/>
         <activity
             android:name="com.example.socialmediaapp.PostViewActivity"
             android:exported="true">
@@ -98,7 +50,7 @@
         </activity>
         <activity
             android:name="com.example.socialmediaapp.MainActivity"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -106,24 +58,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ReplacerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SplashActivity"
+            android:name="com.example.socialmediaapp.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 

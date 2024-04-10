@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide;
 import com.example.socialmediaapp.model.Users;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.marsad.catchy.R;
+import com.example.socialmediaapp.R;
 
 import java.util.List;
 

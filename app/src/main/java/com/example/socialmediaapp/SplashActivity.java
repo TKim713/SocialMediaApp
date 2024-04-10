@@ -8,7 +8,7 @@ import android.os.Handler;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.marsad.catchy.R;
+import com.example.socialmediaapp.R;
 
 public class SplashActivity extends AppCompatActivity {
 
