@@ -68,8 +68,8 @@
             android:background="@drawable/text_box"
             android:hint="Confirm Password"
             android:padding="12dp"
-            android:textColorHint="#D9D9D9"
-            android:textColor="#EBD08D"/>
+            android:textColor="#EBD08D"
+            android:textColorHint="#D9D9D9" />
 
     </LinearLayout>
 

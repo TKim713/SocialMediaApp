@@ -32,13 +32,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,10 +53,12 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.socialmediaapp.MainActivity;
+import com.example.socialmediaapp.ReplacerActivity;
 import com.example.socialmediaapp.chat.ChatActivity;
 import com.example.socialmediaapp.model.PostImageModel;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -97,6 +104,8 @@ public class Profile extends Fragment {
     private LinearLayout countLayout;
     private FirebaseUser user;
     private ImageButton editProfileBtn;
+    private  Toolbar toolbar;
+    private TabLayout tabLayout;
 
 
     public Profile() {
@@ -275,19 +284,38 @@ public class Profile extends Fragment {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                logout();
+                PopupMenu popupMenu = new PopupMenu(getContext(), logoutBtn);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        int itemId = item.getItemId();
+                        if (itemId == R.id.action_logout) {
+                            toolbar.setVisibility(View.GONE);
+                            tabLayout.setVisibility(View.GONE);
+                            logout();
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+                popupMenu.show();
             }
         });
     }
 
+
     void logout()
     {
-        FirebaseAuth.getInstance().signOut(); // Sign out the current user
+        FirebaseAuth.getInstance().signOut();
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_profile, new LoginFragment());
+        fragmentTransaction.commit();
 
-        // Navigate to the login fragment
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_profile, new LoginFragment());
-        transaction.commit();
+//        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+//        transaction.replace(R.id.fragment_login, new LoginFragment());
+//        transaction.commit();
     }
 
     void queryChat() {
@@ -385,8 +413,12 @@ public class Profile extends Fragment {
     }
 
     private void init(View view) {
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (mainActivity != null) {
+            tabLayout = mainActivity.findViewById(R.id.tabLayout);
+        }
 
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar = view.findViewById(R.id.toolbar);
         assert getActivity() != null;
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
