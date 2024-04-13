@@ -25,6 +25,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,6 +47,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.socialmediaapp.MainActivity;
 import com.example.socialmediaapp.chat.ChatActivity;
 import com.example.socialmediaapp.model.PostImageModel;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -89,6 +92,7 @@ public class Profile extends Fragment {
     private TextView nameTv, toolbarNameTv, statusTv, followingCountTv, followersCountTv, postCountTv;
     private CircleImageView profileImage;
     private Button followBtn, startChatBtn;
+    private ImageButton logoutBtn;
     private RecyclerView recyclerView;
     private LinearLayout countLayout;
     private FirebaseUser user;
@@ -268,7 +272,22 @@ public class Profile extends Fragment {
             queryChat();
         });
 
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
+    }
 
+    void logout()
+    {
+        FirebaseAuth.getInstance().signOut(); // Sign out the current user
+
+        // Navigate to the login fragment
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_profile, new LoginFragment());
+        transaction.commit();
     }
 
     void queryChat() {
@@ -383,6 +402,7 @@ public class Profile extends Fragment {
         countLayout = view.findViewById(R.id.countLayout);
         editProfileBtn = view.findViewById(R.id.edit_profileImage);
         startChatBtn = view.findViewById(R.id.startChatBtn);
+        logoutBtn = view.findViewById(R.id.logoutBtn);
 
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
