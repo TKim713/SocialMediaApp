@@ -20,11 +20,18 @@ import com.example.socialmediaapp.model.CommentModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.example.socialmediaapp.R;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,18 +64,19 @@ public class Comment extends Fragment {
 
         init(view);
 
-        reference = FirebaseFirestore.getInstance().collection("Users")
+        reference = FirebaseFirestore.getInstance()
+                .collection("Users")
                 .document(uid)
                 .collection("Post Images")
                 .document(id)
                 .collection("Comments");
+
 
         loadCommentData();
 
         clickListener();
 
     }
-
 
     private void clickListener() {
 
@@ -92,6 +100,7 @@ public class Comment extends Fragment {
 
             map.put("name", user.getDisplayName());
             map.put("profileImageUrl", user.getPhotoUrl().toString());
+            map.put("time", FieldValue.serverTimestamp());
 
             reference.document(commentID)
                     .set(map)
@@ -127,11 +136,11 @@ public class Comment extends Fragment {
                 return;
             }
 
-            for (DocumentSnapshot snapshot : value) {
-
-                CommentModel model = snapshot.toObject(CommentModel.class);
-                list.add(model);
-
+            for (DocumentChange change : value.getDocumentChanges()) {
+                if (change.getType() == DocumentChange.Type.ADDED) {
+                    CommentModel model = change.getDocument().toObject(CommentModel.class);
+                        list.add(model);
+                }
             }
             commentAdapter.notifyDataSetChanged();
 

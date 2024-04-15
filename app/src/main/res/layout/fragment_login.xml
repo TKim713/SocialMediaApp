@@ -23,9 +23,9 @@
         android:id="@+id/ll1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/txtViewLogin"
         android:layout_centerInParent="true"
         android:orientation="vertical"
-        android:layout_below="@id/txtViewLogin"
         android:paddingTop="10dp">
 
         <EditText
@@ -36,8 +36,8 @@
             android:background="@drawable/text_box"
             android:hint="Email"
             android:padding="12dp"
-            android:textColorHint="#D9D9D9"
-            android:textColor="#EBD08D"/>
+            android:textColor="#EBD08D"
+            android:textColorHint="#D9D9D9" />
 
         <EditText
             android:id="@+id/passwordET"
@@ -47,8 +47,8 @@
             android:background="@drawable/text_box"
             android:hint="Password"
             android:padding="12dp"
-            android:textColorHint="#D9D9D9"
-            android:textColor="#EBD08D" />
+            android:textColor="#EBD08D"
+            android:textColorHint="#D9D9D9" />
 
         <TextView
             android:id="@+id/forgotTV"

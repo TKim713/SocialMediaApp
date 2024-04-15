@@ -1,10 +1,23 @@
 package com.example.socialmediaapp.model;
 
+import java.util.Date;
+
 public class CommentModel {
 
     String comment, commentID, postID, uid, name, profileImageUrl;
+    Date time;
 
     public CommentModel() {
+    }
+
+    public CommentModel(String comment, String commentID, String postID, String uid, String name, String profileImageUrl, Date time) {
+        this.comment = comment;
+        this.commentID = commentID;
+        this.postID = postID;
+        this.uid = uid;
+        this.name = name;
+        this.profileImageUrl = profileImageUrl;
+        this.time = time;
     }
 
     public CommentModel(String comment, String commentID, String postID, String uid, String name, String profileImageUrl) {
@@ -14,6 +27,14 @@ public class CommentModel {
         this.uid = uid;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
     }
 
     public String getComment() {
