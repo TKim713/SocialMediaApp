@@ -42,7 +42,7 @@ public class ChatActivity extends AppCompatActivity {
     List<ChatModel> list;
 
 
-    String chatID;
+    String chatID, oppositeUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +65,16 @@ public class ChatActivity extends AppCompatActivity {
 
             CollectionReference reference = FirebaseFirestore.getInstance().collection("Messages");
 
+            List<String> list = new ArrayList<>();
+
+            list.add(0, user.getUid());
+            list.add(1, oppositeUID);
 
             Map<String, Object> map = new HashMap<>();
 
             map.put("lastMessage", message);
             map.put("time", FieldValue.serverTimestamp());
+            map.put("uid", list);
 
 
             reference.document(chatID).update(map);
@@ -103,6 +108,7 @@ public class ChatActivity extends AppCompatActivity {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
+        oppositeUID = getIntent().getStringExtra("uid");
 
         imageView = findViewById(R.id.profileImage);
         name = findViewById(R.id.nameTV);
@@ -121,8 +127,6 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     void loadUserData() {
-
-        String oppositeUID = getIntent().getStringExtra("uid");
 
         FirebaseFirestore.getInstance().collection("Users").document(oppositeUID)
                 .addSnapshotListener((value, error) -> {
