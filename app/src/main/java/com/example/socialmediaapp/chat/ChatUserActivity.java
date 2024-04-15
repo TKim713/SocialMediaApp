@@ -6,17 +6,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.socialmediaapp.adapter.ChatUserAdapter;
 import com.example.socialmediaapp.model.ChatUserModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.example.socialmediaapp.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ChatUserActivity<ChatUsersActivity> extends AppCompatActivity {
@@ -85,10 +88,7 @@ public class ChatUserActivity<ChatUsersActivity> extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
 
                 });
-
-
     }
-
 
     void clickListener() {
 
