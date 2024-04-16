@@ -348,7 +348,6 @@ public class Profile extends Fragment {
                                     intent.putExtra("id", snapshotChat.getId()); //return doc id
                                     startActivity(intent);
                                 }
-                                else startChat(alertDialog);
                             }
                         }
 
