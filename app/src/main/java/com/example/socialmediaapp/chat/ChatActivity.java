@@ -142,7 +142,6 @@ public class ChatActivity extends AppCompatActivity {
                     if (!value.exists())
                         return;
 
-                    //
                     boolean isOnline = Boolean.TRUE.equals(value.getBoolean("online"));
                     status.setText(isOnline ? "Online" : "Offline");
 
@@ -182,6 +181,27 @@ public class ChatActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
 
                 });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateStatus(true);
+    }
 
+    @Override
+    protected void onPause() {
+        updateStatus(false);
+        super.onPause();
+    }
+
+    void updateStatus(boolean status) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("online", status);
+
+        FirebaseFirestore.getInstance()
+                .collection("Users")
+                .document(user.getUid())
+                .update(map);
     }
 }
