@@ -2,10 +2,6 @@ package com.example.socialmediaapp;
 
 import static android.view.View.GONE;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,6 +12,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,13 +23,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.gowtham.library.utils.CompressOption;
-import com.gowtham.library.utils.TrimType;
 import com.gowtham.library.utils.TrimVideo;
-import com.example.socialmediaapp.R;
 import com.marsad.stylishdialogs.StylishAlertDialog;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -139,32 +135,22 @@ public class StoryAddActivity extends AppCompatActivity {
 
     void uploadVideoToStorage(String fileName, Uri uri, String type) {
 
-        File file = new File(uri.getPath());
-
-
+        // Không cần chuyển đổi Uri thành File nữa
         StorageReference storageReference = FirebaseStorage.getInstance().getReference()
                 .child("Stories/" + fileName);
 
-
-        storageReference.putFile(Uri.fromFile(file)).addOnCompleteListener(task -> {
-
+        storageReference.putFile(uri).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-
-                assert task.getResult() != null;
                 task.getResult().getStorage().getDownloadUrl().addOnSuccessListener(uri1 -> {
-                            uploadVideoDataToFirestore(String.valueOf(uri1), type);
-                        }
-                );
-
+                    uploadVideoDataToFirestore(String.valueOf(uri1), type);
+                });
             } else {
                 alertDialog.dismissWithAnimation();
                 assert task.getException() != null;
                 String error = task.getException().getMessage();
                 Toast.makeText(StoryAddActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
             }
-
         });
-
     }
 
 
@@ -228,12 +214,18 @@ public class StoryAddActivity extends AppCompatActivity {
                 });
 
             } else if (uri.toString().contains("video")) {
-                TrimVideo.activity(String.valueOf(uri))
-                        .setCompressOption(new CompressOption())
-                        .setTrimType(TrimType.MIN_MAX_DURATION)
-                        .setMinToMax(5, 30)
-                        .setHideSeekBar(true)
-                        .start(this, startForResult);
+                // Nếu là video, hiển thị trên VideoView
+                videoView.setVisibility(View.VISIBLE);
+                imageView.setVisibility(View.GONE);
+                videoView.setVideoURI(uri);
+                videoView.start();
+                // Hiển thị nút upload và xử lý khi nhấn
+                uploadButton.setVisibility(View.VISIBLE);
+                uploadButton.setOnClickListener(v -> {
+                    uploadButton.setVisibility(GONE);
+                    videoView.pause();
+                    uploadFileToStorage(uri, "video");
+                });
             }
 
 
