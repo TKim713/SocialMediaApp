@@ -191,7 +191,7 @@ public class Add extends Fragment {
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
 
                         if (report.areAllPermissionsGranted()) {
-                            File file = new File(Environment.getExternalStorageDirectory().toString() + "/Download");
+                            File file = new File(Environment.getExternalStorageDirectory().toString() + "/DCIM/Camera");
 
                             if (file.exists()) {
                                 File[] files = file.listFiles();

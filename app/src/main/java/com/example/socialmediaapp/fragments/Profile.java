@@ -341,20 +341,21 @@ public class Profile extends Fragment {
                             alertDialog.dismissWithAnimation();
                             for (DocumentSnapshot snapshotChat : snapshot) {
 
-                                Intent intent = new Intent(getActivity(), ChatActivity.class);
-                                intent.putExtra("uid", userUID);
-                                intent.putExtra("id", snapshotChat.getId()); //return doc id
-                                startActivity(intent);
+                                List<String> uidArray = (List<String>) snapshotChat.get("uid");
+                                if (uidArray != null && uidArray.contains(user.getUid())) {
+                                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+                                    intent.putExtra("uid", userUID);
+                                    intent.putExtra("id", snapshotChat.getId()); //return doc id
+                                    startActivity(intent);
+                                }
+                                else startChat(alertDialog);
                             }
-
-
                         }
 
                     } else
                         alertDialog.dismissWithAnimation();
 
                 });
-
     }
 
     void startChat(StylishAlertDialog alertDialog) {

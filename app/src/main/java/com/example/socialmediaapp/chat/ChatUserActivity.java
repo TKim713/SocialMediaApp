@@ -42,17 +42,14 @@ public class ChatUserActivity<ChatUsersActivity> extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
-
         list = new ArrayList<>();
         adapter = new ChatUserAdapter(this, list);
-
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         recyclerView.setAdapter(adapter);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-
 
     }
 
@@ -69,11 +66,8 @@ public class ChatUserActivity<ChatUsersActivity> extends AppCompatActivity {
                     if (value == null)
                         return;
 
-
-
                     if (value.isEmpty())
                         return;
-
 
                     list.clear();
                     for (QueryDocumentSnapshot snapshot : value) {

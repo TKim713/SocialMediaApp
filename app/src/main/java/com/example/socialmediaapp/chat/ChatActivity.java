@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -158,7 +159,6 @@ public class ChatActivity extends AppCompatActivity {
 
         chatID = getIntent().getStringExtra("id");
 
-
         CollectionReference reference = FirebaseFirestore.getInstance()
                 .collection("Messages")
                 .document(chatID)
@@ -167,7 +167,6 @@ public class ChatActivity extends AppCompatActivity {
         reference
                 .orderBy("time", Query.Direction.ASCENDING)
                 .addSnapshotListener((value, error) -> {
-
 
                     if (error != null) return;
 
