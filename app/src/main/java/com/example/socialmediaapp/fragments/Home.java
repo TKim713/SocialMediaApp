@@ -217,6 +217,7 @@ public class Home extends Fragment {
                     }
                     adapter.notifyDataSetChanged();
                 });
+        loadStories(uidList);
     }
 
     void loadStories(List<String> followingList) {
