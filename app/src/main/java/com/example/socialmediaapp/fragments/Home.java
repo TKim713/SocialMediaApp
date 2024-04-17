@@ -110,8 +110,8 @@ public class Home extends Fragment {
                         textView.setVisibility(View.VISIBLE);
 
                     StringBuilder builder = new StringBuilder();
-                    builder.append("See all")
-                            .append(commentCount.getValue())
+                    builder.append("See all ")
+                            .append(commentCount.getValue()-2)
                             .append(" comments");
 
                     textView.setText(builder);

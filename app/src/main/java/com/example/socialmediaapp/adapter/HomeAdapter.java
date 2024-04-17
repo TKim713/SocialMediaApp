@@ -165,7 +165,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
 
             });
 
-            likeCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> onPressed.onLiked(position, id, uid, likes, isChecked));
+            likeCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                onPressed.onLiked(position, id, uid, likes, isChecked);
+                // Update the like count TextView or similar UI element here
+                updateLikeCount(likes.size());
+            });
 
             shareBtn.setOnClickListener(v -> {
 
@@ -176,6 +180,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
 
             });
 
+
+        }
+        private void updateLikeCount(int likeCount) {
+            if (likeCount == 0)
+            {
+                likeCountTv.setText(String.valueOf(likeCount) + " like");
+            } else if (likeCount == 1)
+            {
+                likeCountTv.setText(String.valueOf(likeCount) + " like");
+            } else
+            {
+                likeCountTv.setText(String.valueOf(likeCount) + " likes");
+            }
 
         }
     }

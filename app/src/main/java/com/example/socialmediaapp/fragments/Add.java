@@ -215,7 +215,6 @@ public class Add extends Fragment {
                         }
 
                     }
-
                     @Override
                     public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
 

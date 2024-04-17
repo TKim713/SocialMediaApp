@@ -348,10 +348,6 @@ public class Profile extends Fragment {
                                     intent.putExtra("id", snapshotChat.getId()); //return doc id
                                     startActivity(intent);
                                 }
-<<<<<<< HEAD
-=======
-                                else startChat(alertDialog);
->>>>>>> 9969762 (Chat | Fix loi thay tin nhan nguoi khac)
                             }
                         }
 
