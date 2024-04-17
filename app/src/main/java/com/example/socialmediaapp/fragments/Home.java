@@ -222,26 +222,47 @@ public class Home extends Fragment {
 
     void loadStories(List<String> followingList) {
 
+        List<StoriesModel> tempStoriesList = new ArrayList<>(); // Tạo một danh sách tạm thời để chứa các stories mới
+
         Query query = FirebaseFirestore.getInstance().collection("Stories");
         query.whereIn("uid", followingList).addSnapshotListener((value, error) -> {
-
             if (error != null) {
                 Log.d("Error: ", error.getMessage());
+                return;
             }
 
-            if (value == null)
+            if (value == null || value.isEmpty()) {
+                // Nếu không có stories nào, không cần làm gì cả
                 return;
+            }
 
+            // Duyệt qua từng document trong snapshot
             for (QueryDocumentSnapshot snapshot : value) {
+                // Chuyển đổi document thành đối tượng StoriesModel
+                StoriesModel model = snapshot.toObject(StoriesModel.class);
 
-                if (!value.isEmpty()) {
-                    StoriesModel model = snapshot.toObject(StoriesModel.class);
-                    storiesModelList.add(model);
+                // Kiểm tra xem stories đã tồn tại trong danh sách tạm thời hay chưa
+                boolean isNewStory = true;
+                for (StoriesModel tempStory : tempStoriesList) {
+                    if (tempStory.getId().equals(model.getId())) {
+                        // Nếu stories đã tồn tại trong danh sách tạm thời, đánh dấu là không phải stories mới
+                        isNewStory = false;
+                        break;
+                    }
                 }
 
+                // Nếu stories là mới, thêm vào danh sách tạm thời
+                if (isNewStory) {
+                    tempStoriesList.add(model);
+                }
             }
-            storiesAdapter.notifyDataSetChanged();
 
+            // Xóa hết các stories cũ trong danh sách chính và thêm các stories mới từ danh sách tạm thời
+            storiesModelList.clear();
+            storiesModelList.addAll(tempStoriesList);
+
+            // Thông báo cho adapter biết rằng danh sách stories đã thay đổi
+            storiesAdapter.notifyDataSetChanged();
         });
 
     }
