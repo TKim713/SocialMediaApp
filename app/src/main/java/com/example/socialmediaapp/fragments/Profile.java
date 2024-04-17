@@ -337,17 +337,22 @@ public class Profile extends Fragment {
                         if (snapshot.isEmpty()) {
                             startChat(alertDialog);
                         } else {
+                            boolean flag = false;
                             //get chatId and pass
                             alertDialog.dismissWithAnimation();
                             for (DocumentSnapshot snapshotChat : snapshot) {
 
                                 List<String> uidArray = (List<String>) snapshotChat.get("uid");
                                 if (uidArray != null && uidArray.contains(user.getUid())) {
+                                    flag = true;
                                     Intent intent = new Intent(getActivity(), ChatActivity.class);
                                     intent.putExtra("uid", userUID);
                                     intent.putExtra("id", snapshotChat.getId()); //return doc id
                                     startActivity(intent);
                                 }
+                            }
+                            if (!flag) {
+                                startChat(alertDialog);
                             }
                         }
 
