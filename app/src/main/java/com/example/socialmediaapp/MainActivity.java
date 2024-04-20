@@ -3,15 +3,15 @@ package com.example.socialmediaapp;
 import static com.example.socialmediaapp.utils.Constants.PREF_DIRECTORY;
 import static com.example.socialmediaapp.utils.Constants.PREF_NAME;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.socialmediaapp.adapter.ViewPagerAdapter;
 import com.example.socialmediaapp.fragments.Profile;
@@ -85,6 +85,27 @@ public class MainActivity extends AppCompatActivity implements Search.OnDataPass
         viewPager.setAdapter(pagerAdapter);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // Không cần xử lý ở đây
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                // Nếu đang xem trang cá nhân của người dùng khác và chuyển sang các trang khác
+                if (IS_SEARCHED_USER && position != 4) {
+                    // Reset trang cá nhân của người dùng hiện tại
+                    resetCurrentUserProfile();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                // Không cần xử lý ở đây
+            }
+        });
+
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_home_fill);
 
@@ -177,6 +198,11 @@ public class MainActivity extends AppCompatActivity implements Search.OnDataPass
         }
 
     }
+    private void resetCurrentUserProfile() {
+        // Thực hiện các thao tác cần thiết để reset trang cá nhân của người dùng hiện tại
+        IS_SEARCHED_USER = false;
+        // Cập nhật trạng thái của tab hoặc các tùy chọn khác tùy thuộc vào nhu cầu của bạn
+    }
 
     @Override
     public void onChange(String uid) {
@@ -226,4 +252,5 @@ public class MainActivity extends AppCompatActivity implements Search.OnDataPass
                 .document(user.getUid())
                 .update(map);
     }
+
 }
