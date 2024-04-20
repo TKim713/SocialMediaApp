@@ -171,7 +171,7 @@ public class Add extends Fragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.laoding_dialog);
+        dialog.setContentView(R.layout.loading_dialog);
         dialog.getWindow().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.dialog_bg, null));
         dialog.setCancelable(false);
 

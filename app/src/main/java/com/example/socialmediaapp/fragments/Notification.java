@@ -76,9 +76,7 @@ public class Notification extends Fragment {
                     if (error != null)
                         return;
 
-
                     if (value.isEmpty()) return;
-
 
                     list.clear();
                     for (QueryDocumentSnapshot snapshot : value) {
@@ -89,8 +87,6 @@ public class Notification extends Fragment {
                     }
                     adapter.notifyDataSetChanged();
 
-
                 });
-
     }
 }

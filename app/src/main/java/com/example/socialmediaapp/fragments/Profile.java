@@ -53,8 +53,11 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.socialmediaapp.MainActivity;
+import com.example.socialmediaapp.PostViewActivity;
 import com.example.socialmediaapp.ReplacerActivity;
+import com.example.socialmediaapp.adapter.PostViewAdapter;
 import com.example.socialmediaapp.chat.ChatActivity;
+import com.example.socialmediaapp.chat.ChatUserActivity;
 import com.example.socialmediaapp.model.PostImageModel;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -92,7 +95,9 @@ public class Profile extends Fragment {
     boolean isMyProfile = true;
     String userUID;
     FirestoreRecyclerAdapter<PostImageModel, PostImageHolder> adapter;
+    PostViewAdapter postViewAdapter;
     List<String> followersList, followingList, followingList_2;
+    List<PostImageModel> list;
     boolean isFollowed;
     DocumentReference userRef, myRef;
     int count;
@@ -302,6 +307,12 @@ public class Profile extends Fragment {
                 popupMenu.show();
             }
         });
+        postViewAdapter.OnPostView((position, postID) -> {
+
+            Intent intent = new Intent(this.getActivity(), PostViewActivity.class);
+            intent.putExtra("id", postID);
+            startActivity(intent);
+        });
     }
 
 
@@ -441,6 +452,8 @@ public class Profile extends Fragment {
         startChatBtn = view.findViewById(R.id.startChatBtn);
         logoutBtn = view.findViewById(R.id.logoutBtn);
 
+        list = new ArrayList<>();
+        postViewAdapter = new PostViewAdapter(this.getActivity(), list);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
