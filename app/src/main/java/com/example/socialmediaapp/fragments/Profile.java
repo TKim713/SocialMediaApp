@@ -18,10 +18,12 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -92,10 +94,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Profile extends Fragment {
 
+    public OnPostView postView;
     boolean isMyProfile = true;
     String userUID;
     FirestoreRecyclerAdapter<PostImageModel, PostImageHolder> adapter;
-    PostViewAdapter postViewAdapter;
     List<String> followersList, followingList, followingList_2;
     List<PostImageModel> list;
     boolean isFollowed;
@@ -307,9 +309,10 @@ public class Profile extends Fragment {
                 popupMenu.show();
             }
         });
-        postViewAdapter.OnPostView((position, postID) -> {
+        OnPostView((position, uid, postID) -> {
 
             Intent intent = new Intent(this.getActivity(), PostViewActivity.class);
+            intent.putExtra("uid", uid);
             intent.putExtra("id", postID);
             startActivity(intent);
         });
@@ -451,9 +454,6 @@ public class Profile extends Fragment {
         editProfileBtn = view.findViewById(R.id.edit_profileImage);
         startChatBtn = view.findViewById(R.id.startChatBtn);
         logoutBtn = view.findViewById(R.id.logoutBtn);
-
-        list = new ArrayList<>();
-        postViewAdapter = new PostViewAdapter(this.getActivity(), list);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
@@ -625,6 +625,8 @@ public class Profile extends Fragment {
                 count = getItemCount();
                 postCountTv.setText("" + count);
 
+                holder.imageView.setOnClickListener(v ->
+                        postView.clicked(position, getItem(position).getUid(), getItem(position).getId()));
             }
 
             @Override
@@ -731,6 +733,14 @@ public class Profile extends Fragment {
 
         reference.document(id).set(map);
 
+    }
+
+    public void OnPostView(OnPostView postView) {
+        this.postView = postView;
+    }
+
+    public interface OnPostView {
+        void clicked(int position, String uid, String postID);
     }
 
     private static class PostImageHolder extends RecyclerView.ViewHolder {

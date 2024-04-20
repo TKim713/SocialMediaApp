@@ -26,6 +26,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -39,9 +40,8 @@ import java.util.Map;
 
 public class PostViewActivity extends AppCompatActivity {
 
-    FirebaseUser user;
+    String userUID;
     private final MutableLiveData<Integer> commentCount = new MutableLiveData<>();
-    Profile adapter;
     HomeAdapter homeAdapter;
     RecyclerView recyclerView;
     private List<HomeModel> list;
@@ -50,7 +50,9 @@ public class PostViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_items);
+        setContentView(R.layout.fragment_home);
+
+        activity = this;
 
         init();
 
@@ -59,10 +61,6 @@ public class PostViewActivity extends AppCompatActivity {
         Uri uri = intent.getData();
 
         loadPostsFromUsers();
-
-        list = new ArrayList<>();
-        homeAdapter = new HomeAdapter(list, this);
-        recyclerView.setAdapter(homeAdapter);
 
         homeAdapter.OnPressed(new HomeAdapter.OnPressed() {
             @Override
@@ -73,10 +71,10 @@ public class PostViewActivity extends AppCompatActivity {
                         .collection("Post Images")
                         .document(id);
 
-                if (likeList.contains(user.getUid())) {
-                    likeList.remove(user.getUid()); // unlike
+                if (likeList.contains(userUID)) {
+                    likeList.remove(userUID); // unlike
                 } else {
-                    likeList.add(user.getUid()); // like
+                    likeList.add(userUID); // like
                 }
 
                 Map<String, Object> map = new HashMap<>();
@@ -112,13 +110,15 @@ public class PostViewActivity extends AppCompatActivity {
 
     void init() {
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
-        postID = getIntent().getStringExtra("id");
-
+        userUID = getIntent().getStringExtra("uid");
+//        postID = getIntent().getStringExtra("id");
         recyclerView = findViewById(R.id.recyclerView);
+        list = new ArrayList<>();
+        homeAdapter = new HomeAdapter(list, this);
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(homeAdapter);
     }
 
     @Override
@@ -132,65 +132,52 @@ public class PostViewActivity extends AppCompatActivity {
 
     private void loadPostsFromUsers() {
         // Lấy bài post từ tất cả người dùng
-        FirebaseFirestore.getInstance().collectionGroup("Post Images")
-                .whereEqualTo("uid", user)
-                .addSnapshotListener((value, error) -> {
-                    if (error != null) {
-                        Log.d("Error: ", error.getMessage());
-                        return;
-                    }
-
-                    if (value == null)
-                        return;
-
-                    list.clear();
-
-                    for (QueryDocumentSnapshot snapshot : value) {
-                        if (!snapshot.exists())
-                            return;
-
-                        HomeModel model = snapshot.toObject(HomeModel.class);
-                        list.add(new HomeModel(
-                                model.getName(),
-                                model.getProfileImage(),
-                                model.getImageUrl(),
-                                model.getUid(),
-                                model.getDescription(),
-                                model.getId(),
-                                model.getTimestamp(),
-                                model.getLikes()));
-
-                        snapshot.getReference().collection("Comments").get()
-                                .addOnCompleteListener(task -> {
-                                    if (task.isSuccessful()) {
-                                        Map<String, Object> map = new HashMap<>();
-                                        for (QueryDocumentSnapshot commentSnapshot : task.getResult()) {
-                                            map = commentSnapshot.getData();
-                                        }
-                                        commentCount.setValue(map.size());
+        CollectionReference reference= FirebaseFirestore.getInstance().collection("Users");
+        reference.whereEqualTo("uid", userUID)
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseFirestore.getInstance().collectionGroup("Post Images")
+                                .whereEqualTo("uid", userUID)
+                                .addSnapshotListener((value, error) -> {
+                                    if (error != null) {
+                                        Log.d("Error: ", error.getMessage());
+                                        return;
                                     }
+
+                                    if (value == null)
+                                        return;
+
+                                    list.clear();
+
+                                    for (QueryDocumentSnapshot snapshot : value) {
+                                        if (!snapshot.exists())
+                                            return;
+
+                                        HomeModel model = snapshot.toObject(HomeModel.class);
+                                        list.add(new HomeModel(
+                                                model.getName(),
+                                                model.getProfileImage(),
+                                                model.getImageUrl(),
+                                                model.getUid(),
+                                                model.getDescription(),
+                                                model.getId(),
+                                                model.getTimestamp(),
+                                                model.getLikes()));
+
+                                        snapshot.getReference().collection("Comments").get()
+                                                .addOnCompleteListener(task1 -> {
+                                                    if (task1.isSuccessful()) {
+                                                        Map<String, Object> map = new HashMap<>();
+                                                        for (QueryDocumentSnapshot commentSnapshot : task1.getResult()) {
+                                                            map = commentSnapshot.getData();
+                                                        }
+                                                        commentCount.setValue(map.size());
+                                                    }
+                                                });
+                                    }
+                                    homeAdapter.notifyDataSetChanged();
                                 });
                     }
-                    homeAdapter.notifyDataSetChanged();
                 });
     }
-//
-//    void clickListener() {
-//
-//        adapter.OnPostView((position, uids, chatID) -> {
-//
-//            String oppositeUID;
-//            if (!uids.get(0).equalsIgnoreCase(user.getUid())) {
-//                oppositeUID = uids.get(0);
-//            } else {
-//                oppositeUID = uids.get(1);
-//            }
-//
-//            Intent intent = new Intent(ChatUserActivity.this, ChatActivity.class);
-//            intent.putExtra("uid", oppositeUID);
-//            intent.putExtra("id", chatID);
-//            startActivity(intent);
-//        });
-//
-//    }
 }

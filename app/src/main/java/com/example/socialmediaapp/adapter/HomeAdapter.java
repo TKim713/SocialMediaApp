@@ -98,8 +98,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
                 list.get(position).getLikes(),
                 list.get(position).getImageUrl()
         );
-
-
     }
 
     @Override
