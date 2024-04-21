@@ -90,7 +90,7 @@ public class Home extends Fragment {
                 } else {
                     likeList.add(user.getUid()); // like
                     // Truyền giá trị uid vào createNotification()
-                    createNotification(uid);
+                    createNotification(uid, id);
                 }
 
                 Map<String, Object> map = new HashMap<>();
@@ -268,7 +268,7 @@ public class Home extends Fragment {
         });
 
     }
-    void createNotification(String uid) {
+    void createNotification(String uid, String postid) {
 
         CollectionReference reference = FirebaseFirestore.getInstance().collection("Notifications");
 
@@ -278,7 +278,7 @@ public class Home extends Fragment {
         map.put("notification", user.getDisplayName() + " liked your post.");
         map.put("id", id);
         map.put("uid", uid);
-
+        map.put("postId", postid);
 
         reference.document(id).set(map);
 

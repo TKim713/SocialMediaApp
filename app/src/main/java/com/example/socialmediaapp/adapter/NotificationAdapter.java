@@ -1,21 +1,19 @@
 package com.example.socialmediaapp.adapter;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.os.Build;
-import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.socialmediaapp.model.NotificationModel;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.socialmediaapp.R;
+import com.example.socialmediaapp.model.NotificationModel;
 
 import java.util.Date;
 import java.util.List;
@@ -24,6 +22,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     Context context;
     List<NotificationModel> list;
+    private OnNotificationClickListener listener;
 
     public NotificationAdapter(Context context, List<NotificationModel> list) {
         this.context = context;
@@ -45,6 +44,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         holder.notification.setText(list.get(position).getNotification());
         holder.time.setText(calculateTime(list.get(position).getTime()));
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onNotificationClick(list.get(position));
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -69,5 +73,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             time = itemView.findViewById(R.id.timeTv);
             notification = itemView.findViewById(R.id.notification);
         }
+    }
+    public interface OnNotificationClickListener {
+        void onNotificationClick(NotificationModel notification);
+    }
+    public void setOnNotificationClickListener(OnNotificationClickListener listener) {
+        this.listener = listener;
     }
 }

@@ -1,6 +1,10 @@
 package com.example.socialmediaapp.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,10 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
+import com.example.socialmediaapp.PostViewActivity;
+import com.example.socialmediaapp.R;
 import com.example.socialmediaapp.adapter.NotificationAdapter;
 import com.example.socialmediaapp.model.NotificationModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,7 +22,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.example.socialmediaapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,15 @@ public class Notification extends Fragment {
         init(view);
 
         loadNotification();
+        // Set sự kiện click cho Adapter
+        adapter.setOnNotificationClickListener(notification -> {
+            // Xử lý khi sự kiện click được kích hoạt
+            // Ví dụ: Chuyển đến bài post tương ứng
+            Intent intent = new Intent(getActivity(), PostViewActivity.class);
+            intent.putExtra("uid", notification.getUid()); // Truyền UID của người đăng bài post
+            intent.putExtra("id", notification.getPostId()); // Truyền ID của bài post
+            startActivity(intent);
+        });
     }
 
     void init(View view) {

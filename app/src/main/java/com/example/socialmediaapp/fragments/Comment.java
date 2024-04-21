@@ -36,7 +36,7 @@ public class Comment extends Fragment {
     CommentAdapter commentAdapter;
     List<CommentModel> list;
     FirebaseUser user;
-    String id, uid;
+    String id, uid, postid;
     CollectionReference reference;
 
     public Comment() {
@@ -112,6 +112,7 @@ public class Comment extends Fragment {
                         }
 
                     });
+            postid=id;
             createNotification();
         });
 
@@ -163,7 +164,6 @@ public class Comment extends Fragment {
 
     }
     void createNotification() {
-
         CollectionReference reference = FirebaseFirestore.getInstance().collection("Notifications");
 
         String id = reference.document().getId();
@@ -172,9 +172,8 @@ public class Comment extends Fragment {
         map.put("notification", user.getDisplayName() + " commented your post.");
         map.put("id", id);
         map.put("uid", uid);
-
+        map.put("postId", postid); // Thêm postId vào bản ghi thông báo
 
         reference.document(id).set(map);
-
     }
 }

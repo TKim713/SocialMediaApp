@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class NotificationModel {
 
-    String id, notification;
+    String id, notification, uid, postId;
 
     @ServerTimestamp
     Date time;
@@ -15,10 +15,27 @@ public class NotificationModel {
     }
 
 
-    public NotificationModel(String id, String notification, Date time) {
+    public NotificationModel(String id, String notification, String postId, Date time) {
         this.id = id;
         this.notification = notification;
+        this.postId = postId;
         this.time = time;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 
     public String getId() {
