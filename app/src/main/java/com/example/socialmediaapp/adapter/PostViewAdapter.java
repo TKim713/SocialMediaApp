@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.socialmediaapp.R;
 import com.example.socialmediaapp.fragments.Profile;
 import com.example.socialmediaapp.model.ChatUserModel;
@@ -23,6 +25,7 @@ public class PostViewAdapter extends RecyclerView.Adapter<PostViewAdapter.PostVi
     public OnPostView postView;
     Activity context;
     List<PostImageModel> list;
+    private TextView postCountTv;
     public PostViewAdapter(Activity context, List<PostImageModel> list) {
         this.context = context;
         this.list = list;
@@ -37,8 +40,15 @@ public class PostViewAdapter extends RecyclerView.Adapter<PostViewAdapter.PostVi
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
 
-        holder.imageView.setOnClickListener(v ->
-                postView.clicked(position, list.get(position).getId()));
+//        Glide.with(holder.itemView.getContext().getApplicationContext())
+//                .load(model.getImageUrl())
+//                .timeout(6500)
+//                .into(holder.imageView);
+//        count = getItemCount();
+//        postCountTv.setText("" + count);
+//
+//        holder.imageView.setOnClickListener(v ->
+//                postView.clicked(position, getItem(position).getUid(), getItem(position).getId()));
     }
 
     @Override

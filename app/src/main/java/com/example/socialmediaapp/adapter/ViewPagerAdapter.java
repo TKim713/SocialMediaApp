@@ -1,5 +1,7 @@
 package com.example.socialmediaapp.adapter;
 
+import static com.example.socialmediaapp.MainActivity.VIEW_POST;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -8,6 +10,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.example.socialmediaapp.fragments.Add;
 import com.example.socialmediaapp.fragments.Home;
 import com.example.socialmediaapp.fragments.Notification;
+import com.example.socialmediaapp.fragments.PostView;
 import com.example.socialmediaapp.fragments.Profile;
 import com.example.socialmediaapp.fragments.Search;
 
@@ -27,6 +30,9 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
             default:
             case 0:
+                if (VIEW_POST) {
+                    return new PostView();
+                }
                 return new Home();
 
             case 1:
@@ -40,10 +46,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
             case 4:
                 return new Profile();
-
-
         }
-
     }
 
     @Override

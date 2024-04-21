@@ -14,12 +14,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.example.socialmediaapp.adapter.ViewPagerAdapter;
+import com.example.socialmediaapp.fragments.Profile;
 import com.example.socialmediaapp.fragments.Search;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.example.socialmediaapp.R;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,9 +29,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements Search.OnDataPass{
-    public static String USER_ID;
-    public static boolean IS_SEARCHED_USER = false;
+public class MainActivity extends AppCompatActivity implements Search.OnDataPass, Profile.OnDataPass {
+    public static String USER_ID, POST_ID;
+    public static boolean IS_SEARCHED_USER = false, VIEW_POST = false;
     ViewPagerAdapter pagerAdapter;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private TabLayout tabLayout;
@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements Search.OnDataPass
 
         viewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tabLayout);
-
     }
 
     private void addTabs() {
@@ -71,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements Search.OnDataPass
             tabLayout.addTab(tabLayout.newTab().setIcon(drawableResList.get(i)));
         }
 
-
         SharedPreferences preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String directory = preferences.getString(PREF_DIRECTORY, "");
 
@@ -79,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements Search.OnDataPass
         Drawable drawable = new BitmapDrawable(getResources(), bitmap);
 
         tabLayout.addTab(tabLayout.newTab().setIcon(drawable));
-
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -114,14 +111,14 @@ public class MainActivity extends AppCompatActivity implements Search.OnDataPass
                     case 3:
                         tab.setIcon(R.drawable.ic_heart_fill);
                         break;
-
-
                 }
-
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+
+                IS_SEARCHED_USER = false;
+                VIEW_POST = false;
 
                 switch (tab.getPosition()) {
 
@@ -140,10 +137,7 @@ public class MainActivity extends AppCompatActivity implements Search.OnDataPass
                     case 3:
                         tab.setIcon(R.drawable.ic_heart);
                         break;
-
-
                 }
-
             }
 
             @Override
@@ -164,15 +158,11 @@ public class MainActivity extends AppCompatActivity implements Search.OnDataPass
                         break;
 
                     case 3:
-
                         tab.setIcon(R.drawable.ic_heart_fill);
                         break;
-
                 }
-
             }
         });
-
     }
 
     private Bitmap loadProfileImage(String directory) {
@@ -196,11 +186,20 @@ public class MainActivity extends AppCompatActivity implements Search.OnDataPass
     }
 
     @Override
+    public void onPostView(int position, String uid, String postID) {
+        USER_ID = uid;
+        POST_ID = postID;
+        VIEW_POST = true;
+        viewPager.setCurrentItem(0);
+    }
+
+    @Override
     public void onBackPressed() {
 
         if (viewPager.getCurrentItem() == 4) {
             viewPager.setCurrentItem(0);
             IS_SEARCHED_USER = false;
+            VIEW_POST = false;
         } else
             super.onBackPressed();
     }

@@ -18,12 +18,10 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -34,10 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,10 +51,8 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.socialmediaapp.MainActivity;
 import com.example.socialmediaapp.PostViewActivity;
-import com.example.socialmediaapp.ReplacerActivity;
-import com.example.socialmediaapp.adapter.PostViewAdapter;
+import com.example.socialmediaapp.adapter.UserAdapter;
 import com.example.socialmediaapp.chat.ChatActivity;
-import com.example.socialmediaapp.chat.ChatUserActivity;
 import com.example.socialmediaapp.model.PostImageModel;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -95,11 +88,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class Profile extends Fragment {
 
     public OnPostView postView;
+    OnDataPass onDataPass;
     boolean isMyProfile = true;
     String userUID;
     FirestoreRecyclerAdapter<PostImageModel, PostImageHolder> adapter;
     List<String> followersList, followingList, followingList_2;
-    List<PostImageModel> list;
     boolean isFollowed;
     DocumentReference userRef, myRef;
     int count;
@@ -114,9 +107,15 @@ public class Profile extends Fragment {
     private  Toolbar toolbar;
     private TabLayout tabLayout;
 
-
     public Profile() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        onDataPass = (OnDataPass) context;
     }
 
     @Override
@@ -133,10 +132,8 @@ public class Profile extends Fragment {
 
         init(view);
 
-
         myRef = FirebaseFirestore.getInstance().collection("Users")
                 .document(user.getUid());
-
 
         if (IS_SEARCHED_USER) {
             isMyProfile = false;
@@ -162,6 +159,7 @@ public class Profile extends Fragment {
             followBtn.setVisibility(View.VISIBLE);
 //            countLayout.setVisibility(View.GONE);
         }
+
         userRef = FirebaseFirestore.getInstance().collection("Users").document(userUID);
 
         loadBasicData();
@@ -173,7 +171,6 @@ public class Profile extends Fragment {
         recyclerView.setAdapter(adapter);
 
         clickListener();
-
     }
 
     private void loadData() {
@@ -191,14 +188,11 @@ public class Profile extends Fragment {
 
             followingList_2 = (List<String>) value.get("following");
 
-
         });
-
     }
 
     @SuppressLint("SetTextI18n")
     private void clickListener() {
-
 
         followBtn.setOnClickListener(v -> {
 
@@ -211,10 +205,8 @@ public class Profile extends Fragment {
                 final Map<String, Object> map_2 = new HashMap<>();
                 map_2.put("following", followingList_2);
 
-
                 Map<String, Object> map = new HashMap<>();
                 map.put("followers", followersList);
-
 
                 userRef.update(map).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -228,14 +220,11 @@ public class Profile extends Fragment {
                                 Log.e("Tag_3", task1.getException().getMessage());
                             }
                         });
-
                     } else {
                         assert task.getException() != null;
                         Log.e("Tag", "" + task.getException().getMessage());
                     }
                 });
-
-
             } else {
 
                 createNotification();
@@ -264,17 +253,12 @@ public class Profile extends Fragment {
                                 Log.e("tag_3_1", task12.getException().getMessage());
                             }
                         });
-
-
                     } else {
                         assert task.getException() != null;
                         Log.e("Tag", "" + task.getException().getMessage());
                     }
                 });
-
-
             }
-
         });
 
         assert getContext() != null;
@@ -309,15 +293,13 @@ public class Profile extends Fragment {
                 popupMenu.show();
             }
         });
-        OnPostView((position, uid, postID) -> {
-
-            Intent intent = new Intent(this.getActivity(), PostViewActivity.class);
-            intent.putExtra("uid", uid);
-            intent.putExtra("id", postID);
-            startActivity(intent);
+        OnPostView(new OnPostView() {
+            @Override
+            public void clicked(int position, String uid, String postID) {
+                onDataPass.onPostView(position, uid, postID);
+            }
         });
     }
-
 
     void logout()
     {
@@ -369,10 +351,8 @@ public class Profile extends Fragment {
                                 startChat(alertDialog);
                             }
                         }
-
                     } else
                         alertDialog.dismissWithAnimation();
-
                 });
     }
 
@@ -428,7 +408,6 @@ public class Profile extends Fragment {
             startActivity(intent);
 
         }, 3000);
-
     }
 
     private void init(View view) {
@@ -457,7 +436,6 @@ public class Profile extends Fragment {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -514,31 +492,22 @@ public class Profile extends Fragment {
                             .timeout(6500)
                             .into(profileImage);
 
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
 
                 if (followersList.contains(user.getUid())) {
                     followBtn.setText("UnFollow");
                     isFollowed = true;
                     startChatBtn.setVisibility(View.VISIBLE);
-
-
                 } else {
                     isFollowed = false;
                     followBtn.setText("Follow");
 
                     startChatBtn.setVisibility(View.GONE);
-
                 }
-
-
             }
-
         });
-
     }
 
     private void storeProfileImage(Bitmap bitmap, String url) {
@@ -586,13 +555,10 @@ public class Profile extends Fragment {
             }
 
         }
-
         editor.putBoolean(PREF_STORED, true);
         editor.putString(PREF_URL, url);
         editor.putString(PREF_DIRECTORY, directory.getAbsolutePath());
         editor.apply();
-
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -635,8 +601,6 @@ public class Profile extends Fragment {
                 return super.getItemCount();
             }
         };
-
-
     }
 
     @Override
@@ -667,7 +631,6 @@ public class Profile extends Fragment {
             uploadImage(uri);
 
         }
-
     }
 
     private void uploadImage(Uri uri) {
@@ -705,9 +668,7 @@ public class Profile extends Fragment {
                                                             Toast.LENGTH_SHORT).show();
                                                 }
                                             });
-
                                 });
-
                     } else {
                         assert task.getException() != null;
                         Toast.makeText(getContext(), "Error: " + task.getException().getMessage(),
@@ -715,8 +676,6 @@ public class Profile extends Fragment {
                     }
 
                 });
-
-
     }
 
     void createNotification() {
@@ -730,9 +689,7 @@ public class Profile extends Fragment {
         map.put("id", id);
         map.put("uid", userUID);
 
-
         reference.document(id).set(map);
-
     }
 
     public void OnPostView(OnPostView postView) {
@@ -741,6 +698,9 @@ public class Profile extends Fragment {
 
     public interface OnPostView {
         void clicked(int position, String uid, String postID);
+    }
+    public interface OnDataPass {
+        void onPostView(int position, String uid, String postID);
     }
 
     private static class PostImageHolder extends RecyclerView.ViewHolder {
@@ -751,8 +711,6 @@ public class Profile extends Fragment {
             super(itemView);
 
             imageView = itemView.findViewById(R.id.imageView);
-
         }
-
     }
 }

@@ -89,7 +89,5 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserHolder> {
             layout = itemView.findViewById(R.id.relativeLayout);
 
         }
-
-
     }
 }

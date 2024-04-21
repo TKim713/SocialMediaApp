@@ -1,64 +1,80 @@
-package com.example.socialmediaapp;
+package com.example.socialmediaapp.fragments;
 
-import androidx.appcompat.app.AppCompatActivity;
+import static com.example.socialmediaapp.MainActivity.POST_ID;
+import static com.example.socialmediaapp.MainActivity.USER_ID;
+import static com.example.socialmediaapp.MainActivity.VIEW_POST;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.example.socialmediaapp.MainActivity;
+import com.example.socialmediaapp.PostViewActivity;
+import com.example.socialmediaapp.R;
+import com.example.socialmediaapp.ReplacerActivity;
 import com.example.socialmediaapp.adapter.HomeAdapter;
-import com.example.socialmediaapp.chat.ChatActivity;
-import com.example.socialmediaapp.chat.ChatUserActivity;
-import com.example.socialmediaapp.fragments.Profile;
 import com.example.socialmediaapp.model.HomeModel;
-import com.example.socialmediaapp.model.PostImageModel;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.example.socialmediaapp.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PostViewActivity extends AppCompatActivity {
+public class PostView extends Fragment {
 
-    String userUID;
+    String userUID, postID;
     private final MutableLiveData<Integer> commentCount = new MutableLiveData<>();
     HomeAdapter homeAdapter;
     RecyclerView recyclerView;
     private List<HomeModel> list;
     Activity activity;
-    String postID;
+
+    public PostView() {
+        // Required empty public constructor
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_home);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_post_view, container, false);
+    }
 
-        activity = this;
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        init();
+        activity = getActivity();
 
-        Intent intent = getIntent();
+        init(view);
 
-        Uri uri = intent.getData();
+        if (VIEW_POST) {
+            userUID = USER_ID;
+            postID = POST_ID;
+        }
+
+        list = new ArrayList<>();
+        homeAdapter = new HomeAdapter(list, getActivity());
+        recyclerView.setAdapter(homeAdapter);
 
         loadPostsFromUsers();
 
@@ -108,26 +124,11 @@ public class PostViewActivity extends AppCompatActivity {
         });
     }
 
-    void init() {
+    void init(View view) {
 
-        userUID = getIntent().getStringExtra("uid");
-        postID = getIntent().getStringExtra("id");
-        recyclerView = findViewById(R.id.recyclerView);
-        list = new ArrayList<>();
-        homeAdapter = new HomeAdapter(list, this);
-
+        recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(homeAdapter);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if (FirebaseAuth.getInstance().getCurrentUser() != null){
-            startActivity(new Intent(PostViewActivity.this, MainActivity.class));
-        }else
-            startActivity(new Intent(PostViewActivity.this, ReplacerActivity.class));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     private void loadPostsFromUsers() {
