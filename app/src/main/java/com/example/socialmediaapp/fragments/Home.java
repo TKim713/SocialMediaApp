@@ -27,8 +27,10 @@ import com.example.socialmediaapp.model.HomeModel;
 import com.example.socialmediaapp.model.StoriesModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -78,7 +80,6 @@ public class Home extends Fragment {
         adapter.OnPressed(new HomeAdapter.OnPressed() {
             @Override
             public void onLiked(int position, String id, String uid, List<String> likeList, boolean isChecked) {
-
                 DocumentReference reference = FirebaseFirestore.getInstance().collection("Users")
                         .document(uid)
                         .collection("Post Images")
@@ -88,13 +89,14 @@ public class Home extends Fragment {
                     likeList.remove(user.getUid()); // unlike
                 } else {
                     likeList.add(user.getUid()); // like
+                    // Truyền giá trị uid vào createNotification()
+                    createNotification(uid);
                 }
 
                 Map<String, Object> map = new HashMap<>();
                 map.put("likes", likeList);
 
                 reference.update(map);
-
             }
 
             @Override
@@ -264,6 +266,21 @@ public class Home extends Fragment {
             // Thông báo cho adapter biết rằng danh sách stories đã thay đổi
             storiesAdapter.notifyDataSetChanged();
         });
+
+    }
+    void createNotification(String uid) {
+
+        CollectionReference reference = FirebaseFirestore.getInstance().collection("Notifications");
+
+        String id = reference.document().getId();
+        Map<String, Object> map = new HashMap<>();
+        map.put("time", FieldValue.serverTimestamp());
+        map.put("notification", user.getDisplayName() + " liked your post.");
+        map.put("id", id);
+        map.put("uid", uid);
+
+
+        reference.document(id).set(map);
 
     }
 }

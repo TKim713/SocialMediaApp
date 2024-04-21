@@ -107,7 +107,6 @@
         android:layout_marginTop="15dp"
         android:padding="8dp"
         android:text="View all comment"
-        android:visibility="gone"
-        android:layout_marginTop="15dp"/>
+        android:visibility="gone"/>
 
 </RelativeLayout>

@@ -1,13 +1,6 @@
 package com.example.socialmediaapp.fragments;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,23 +8,23 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.socialmediaapp.R;
 import com.example.socialmediaapp.adapter.CommentAdapter;
 import com.example.socialmediaapp.model.CommentModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.example.socialmediaapp.R;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,7 +112,7 @@ public class Comment extends Fragment {
                         }
 
                     });
-
+            createNotification();
         });
 
     }
@@ -169,5 +162,19 @@ public class Comment extends Fragment {
         uid = getArguments().getString("uid");
 
     }
+    void createNotification() {
 
+        CollectionReference reference = FirebaseFirestore.getInstance().collection("Notifications");
+
+        String id = reference.document().getId();
+        Map<String, Object> map = new HashMap<>();
+        map.put("time", FieldValue.serverTimestamp());
+        map.put("notification", user.getDisplayName() + " commented your post.");
+        map.put("id", id);
+        map.put("uid", uid);
+
+
+        reference.document(id).set(map);
+
+    }
 }
