@@ -36,9 +36,12 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Home extends Fragment {
 
@@ -51,6 +54,8 @@ public class Home extends Fragment {
     private List<HomeModel> list;
     private FirebaseUser user;
     Activity activity;
+
+    long currentTime, expiryTime;
 
     public Home() {
         // Required empty public constructor
@@ -149,7 +154,7 @@ public class Home extends Fragment {
                 .setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         storiesModelList = new ArrayList<>();
-        storiesModelList.add(new StoriesModel("", "", "", "", ""));
+        storiesModelList.add(new StoriesModel("", "", "", "", "", System.currentTimeMillis()));
         storiesAdapter = new StoriesAdapter(storiesModelList, getActivity());
         storiesRecyclerView.setAdapter(storiesAdapter);
 
@@ -220,6 +225,7 @@ public class Home extends Fragment {
                     adapter.notifyDataSetChanged();
                 });
         loadStories(uidList);
+        scheduleStoryDeletion();
     }
 
     void loadStories(List<String> followingList) {
@@ -268,6 +274,38 @@ public class Home extends Fragment {
         });
 
     }
+
+    void scheduleStoryDeletion() {
+        // Schedule a background task to run periodically
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                currentTime = System.currentTimeMillis();
+
+                // Calculate the timestamp of 24 hours ago
+                expiryTime = currentTime - (60 * 1000);
+
+                // Query Firestore for stories uploaded more than 24 hours ago
+                CollectionReference storiesRef = FirebaseFirestore.getInstance().collection("Stories");
+                Query query = storiesRef.whereLessThan("timestamp", expiryTime);
+
+                query.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            // Delete the story
+                            storiesRef.document(document.getId()).delete();
+                        }
+                    } else {
+                        // Handle errors
+                    }
+                });
+            }
+        }, 0, 60 * 1000); // Run every 24 hours
+    }
+
     void createNotification(String uid, String postid) {
 
         CollectionReference reference = FirebaseFirestore.getInstance().collection("Notifications");

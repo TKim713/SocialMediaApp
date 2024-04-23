@@ -40,6 +40,7 @@ public class StoryAddActivity extends AppCompatActivity {
 
     ImageView imageView;
 
+    long currentTime;
 
     ActivityResultLauncher<Intent> startForResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -83,6 +84,7 @@ public class StoryAddActivity extends AppCompatActivity {
         intent.setType("image/* video/*");
         intent.putExtra(Intent.EXTRA_MIME_TYPES, "image/* video/*");
         startActivityForResult(intent, SELECT_VIDEO);
+
     }
 
     void uploadFileToStorage(Uri uri, String type) {
@@ -159,12 +161,16 @@ public class StoryAddActivity extends AppCompatActivity {
 
         String id = reference.document().getId();
 
+        // Get current timestamp
+        currentTime = System.currentTimeMillis();
+
         Map<String, Object> map = new HashMap<>();
         map.put("url", url);
         map.put("id", id);
         map.put("uid", user.getUid());
         map.put("type", type);
         map.put("name", user.getDisplayName());
+        map.put("timestamp", currentTime);
 
         reference.document(id)
                 .set(map);
