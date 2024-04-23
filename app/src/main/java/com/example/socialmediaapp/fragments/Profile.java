@@ -138,6 +138,7 @@ public class Profile extends Fragment {
         if (IS_SEARCHED_USER) {
             isMyProfile = false;
             userUID = USER_ID;
+            logoutBtn.setVisibility(View.GONE);
 
             loadData();
 
@@ -156,6 +157,7 @@ public class Profile extends Fragment {
 
         } else {
             editProfileBtn.setVisibility(View.GONE);
+            logoutBtn.setVisibility(View.GONE);
             followBtn.setVisibility(View.VISIBLE);
 //            countLayout.setVisibility(View.GONE);
         }

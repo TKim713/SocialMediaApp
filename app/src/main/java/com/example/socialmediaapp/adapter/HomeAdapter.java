@@ -1,7 +1,8 @@
 package com.example.socialmediaapp.adapter;
 
+import static java.security.AccessController.getContext;
+
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
@@ -9,21 +10,24 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.socialmediaapp.ReplacerActivity;
 import com.example.socialmediaapp.model.HomeModel;
+import com.google.android.exoplayer2.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.example.socialmediaapp.R;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 import java.util.Random;
@@ -35,6 +39,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
     private final List<HomeModel> list;
     Activity context;
     OnPressed onPressed;
+
 
     public HomeAdapter(List<HomeModel> list, Activity context) {
         this.list = list;
@@ -98,6 +103,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
                 list.get(position).getLikes(),
                 list.get(position).getImageUrl()
         );
+
+        if (user != null && list.get(position).getUid().equals(user.getUid())) {
+            // Hiển thị nút editPost nếu bài viết là của người dùng hiện tại
+            holder.edtPost.setVisibility(View.VISIBLE);
+        } else {
+            // Ẩn nút editPost nếu bài viết không thuộc về người dùng hiện tại
+            holder.edtPost.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -128,6 +141,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
         private final CheckBox likeCheckBox;
         private final ImageButton commentBtn;
         private final ImageButton shareBtn;
+        private final ImageButton edtPost;
 
 
         public HomeHolder(@NonNull View itemView) {
@@ -142,6 +156,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
             commentBtn = itemView.findViewById(R.id.commentBtn);
             shareBtn = itemView.findViewById(R.id.shareBtn);
             descriptionTv = itemView.findViewById(R.id.descTv);
+            edtPost = itemView.findViewById(R.id.editPost);
 
             TextView commentTV = itemView.findViewById(R.id.commentTV);
 
@@ -178,7 +193,47 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
 
             });
 
+            edtPost.setOnClickListener(v -> {
+                PopupMenu popupMenu = new PopupMenu(context, edtPost);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_edtpost, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        int itemId = item.getItemId();
+                        if (itemId == R.id.action_delete) {
+                            DeletePost(getAdapterPosition());
+                            return true;
+                        }
 
+                        return false;
+                    }
+                });
+                popupMenu.show();
+
+            });
+
+        }
+
+        private void DeletePost(int position) {
+            String userId = list.get(position).getUid(); // Lấy UID của người đăng bài
+            String postId = list.get(position).getId(); // Lấy ID của bài đăng cần xóa
+
+            // Xóa bài đăng từ Firestore
+            FirebaseFirestore.getInstance()
+                    .collection("Users") // Truy cập collection "Users"
+                    .document(userId) // Truy cập document của người đăng bài
+                    .collection("Post Images") // Truy cập collection "Post Images" của người đăng bài
+                    .document(postId) // Truy cập document của bài đăng cần xóa
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        // Xóa thành công, cập nhật giao diện người dùng
+                        list.remove(position);
+                        notifyItemRemoved(position);
+                    })
+                    .addOnFailureListener(e -> {
+                        // Xóa thất bại, hiển thị thông báo hoặc xử lý lỗi tương ứng
+                        Log.e("DeletePost", "Error deleting post: " + e.getMessage());
+                    });
         }
         private void updateLikeCount(int likeCount) {
             if (likeCount == 0)
