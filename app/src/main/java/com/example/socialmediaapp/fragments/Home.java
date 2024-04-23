@@ -85,6 +85,12 @@ public class Home extends Fragment {
         adapter.OnPressed(new HomeAdapter.OnPressed() {
             @Override
             public void onLiked(int position, String id, String uid, List<String> likeList, boolean isChecked) {
+                // Check if the current user is not the owner of the post
+                if (!uid.equals(user.getUid())) {
+                    // Someone other than the owner liked the post, create notification
+                    createNotification(uid, id);
+                }
+
                 DocumentReference reference = FirebaseFirestore.getInstance().collection("Users")
                         .document(uid)
                         .collection("Post Images")
@@ -94,8 +100,6 @@ public class Home extends Fragment {
                     likeList.remove(user.getUid()); // unlike
                 } else {
                     likeList.add(user.getUid()); // like
-                    // Truyền giá trị uid vào createNotification()
-                    createNotification(uid, id);
                 }
 
                 Map<String, Object> map = new HashMap<>();

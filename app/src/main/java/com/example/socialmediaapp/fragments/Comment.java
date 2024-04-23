@@ -82,7 +82,6 @@ public class Comment extends Fragment {
                 return;
             }
 
-
             String commentID = reference.document().getId();
 
             Map<String, Object> map = new HashMap<>();
@@ -90,7 +89,6 @@ public class Comment extends Fragment {
             map.put("comment", comment);
             map.put("commentID", commentID);
             map.put("postID", id);
-
             map.put("name", user.getDisplayName());
             map.put("profileImageUrl", user.getPhotoUrl().toString());
             map.put("time", FieldValue.serverTimestamp());
@@ -100,23 +98,26 @@ public class Comment extends Fragment {
                     .addOnCompleteListener(task -> {
 
                         if (task.isSuccessful()) {
-
                             commentEt.setText("");
 
+                            // Check if the user commenting is not the post owner
+                            if (!user.getUid().equals(uid)) {
+                                // Create notification only if someone other than the post owner comments
+                                postid = id; // Assign postid
+                                createNotification();
+                            }
                         } else {
-
                             assert  task.getException() != null;
                             Toast.makeText(getContext(), "Failed to comment:" + task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
-
                         }
 
                     });
-            postid=id;
-            createNotification();
+
         });
 
     }
+
 
     private void loadCommentData() {
 
