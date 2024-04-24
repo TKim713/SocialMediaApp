@@ -137,6 +137,15 @@ public class Add extends Fragment {
         startActivityForResult(intent, SELECT_VIDEO);
     }
 
+    // Method to open file chooser dialog
+    private void openFileChooser() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/* video/*");
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/*", "video/*"});
+        startActivityForResult(intent, SELECT_VIDEO);
+    }
+
     private void uploadData(String imageURL) {
 
 
