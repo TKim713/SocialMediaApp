@@ -51,6 +51,9 @@ import java.util.Map;
 public class Add extends Fragment {
     Uri imageUri;
 
+    private static final int SELECT_VIDEO = 101;
+    private static final int SELECT_IMAGE = 102;
+
     Dialog dialog;
 
     private EditText descET;
@@ -99,25 +102,38 @@ public class Add extends Fragment {
 
         nextBtn.setOnClickListener(v -> {
 
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            final StorageReference storageReference = storage.getReference().child("Post Images/" + System.currentTimeMillis());
+            if (imageUri != null) {
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                final StorageReference storageReference = storage.getReference().child("Post Images/" + System.currentTimeMillis());
 
-            dialog.show();
+                dialog.show();
 
-            storageReference.putFile(imageUri)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
+                storageReference.putFile(imageUri)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
 
-                            storageReference.getDownloadUrl().addOnSuccessListener(uri -> uploadData(uri.toString()));
+                                storageReference.getDownloadUrl().addOnSuccessListener(uri -> uploadData(uri.toString()));
 
-                        } else {
-                            dialog.dismiss();
-                            Toast.makeText(getContext(), "Failed to upload post", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
+                            } else {
+                                dialog.dismiss();
+                                Toast.makeText(getContext(), "Failed to upload post", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            } else {
+                Toast.makeText(getContext(), "Please select an image first", Toast.LENGTH_SHORT).show();
+            }
         });
 
+        openFileChooser();
+    }
+
+    // Method to open file chooser dialog
+    private void openFileChooser() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/* video/*");
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/*", "video/*"});
+        startActivityForResult(intent, SELECT_VIDEO);
     }
 
     private void uploadData(String imageURL) {
@@ -181,72 +197,45 @@ public class Add extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+    }
 
-        getActivity().runOnUiThread(() -> Dexter.withContext(getContext())
-                .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE)
-                .withListener(new MultiplePermissionsListener() {
-                    @Override
-                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+    // Method to check if the selected file is an image
+    private boolean isImageFile(Uri uri) {
+        String mimeType = getActivity().getContentResolver().getType(uri);
+        return mimeType != null && mimeType.startsWith("image");
+    }
 
-                        if (report.areAllPermissionsGranted()) {
-                            File file = new File(Environment.getExternalStorageDirectory().toString() + "/DCIM/Camera");
-
-                            if (file.exists()) {
-                                File[] files = file.listFiles();
-                                assert files != null;
-
-                                list.clear();
-
-                                for (File file1 : files) {
-
-                                    if (file1.getAbsolutePath().endsWith(".jpg") || file1.getAbsolutePath().endsWith(".png")) {
-
-                                        list.add(new GalleryImages(Uri.fromFile(file1)));
-                                        adapter.notifyDataSetChanged();
-
-                                    }
-
-                                }
-
-
-                            }
-
-                        }
-
-                    }
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
-
-                    }
-                }).check());
-
+    // Method to check if the selected file is a video
+    private boolean isVideoFile(Uri uri) {
+        String mimeType = getActivity().getContentResolver().getType(uri);
+        return mimeType != null && mimeType.startsWith("video");
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_VIDEO || requestCode == SELECT_IMAGE) {
+                if (data != null) {
+                    // Get the URI of the selected file
+                    imageUri = data.getData();
 
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-
-            if (resultCode == RESULT_OK) {
-
-                assert result != null;
-                imageUri = result.getUri();
-
-                Glide.with(getContext())
-                        .load(imageUri)
-                        .into(imageView);
-
-                imageView.setVisibility(View.VISIBLE);
-                nextBtn.setVisibility(View.VISIBLE);
-
+                    // Check if the selected file is an image or video
+                    if (isImageFile(imageUri)) {
+                        // If it's an image, load it into ImageView
+                        Glide.with(this)
+                                .load(imageUri)
+                                .into(imageView);
+                        imageView.setVisibility(View.VISIBLE);
+                        nextBtn.setVisibility(View.VISIBLE);
+                    } else if (isVideoFile(imageUri)) {
+                        // If it's a video, you can handle it accordingly
+                        // You may want to show a thumbnail preview or handle video upload
+                    }
+                }
             }
-
         }
-
     }
 
 }

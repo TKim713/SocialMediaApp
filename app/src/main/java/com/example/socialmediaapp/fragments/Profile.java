@@ -50,8 +50,6 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.socialmediaapp.MainActivity;
-import com.example.socialmediaapp.PostViewActivity;
-import com.example.socialmediaapp.adapter.UserAdapter;
 import com.example.socialmediaapp.chat.ChatActivity;
 import com.example.socialmediaapp.model.PostImageModel;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;

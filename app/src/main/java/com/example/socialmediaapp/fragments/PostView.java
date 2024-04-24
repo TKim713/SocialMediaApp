@@ -5,7 +5,6 @@ import static com.example.socialmediaapp.MainActivity.USER_ID;
 import static com.example.socialmediaapp.MainActivity.VIEW_POST;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,13 +21,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.socialmediaapp.MainActivity;
-import com.example.socialmediaapp.PostViewActivity;
 import com.example.socialmediaapp.R;
-import com.example.socialmediaapp.ReplacerActivity;
 import com.example.socialmediaapp.adapter.HomeAdapter;
 import com.example.socialmediaapp.model.HomeModel;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
