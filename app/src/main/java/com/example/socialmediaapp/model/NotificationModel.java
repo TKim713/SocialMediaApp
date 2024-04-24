@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class NotificationModel {
 
-    String id, notification, uid, postId;
+    String id, notification, uid, postId, type;
 
     @ServerTimestamp
     Date time;
@@ -14,6 +14,13 @@ public class NotificationModel {
     public NotificationModel() {
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public NotificationModel(String id, String notification, String postId, Date time) {
         this.id = id;

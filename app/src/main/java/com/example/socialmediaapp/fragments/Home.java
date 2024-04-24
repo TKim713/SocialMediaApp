@@ -36,7 +36,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,26 +84,30 @@ public class Home extends Fragment {
         adapter.OnPressed(new HomeAdapter.OnPressed() {
             @Override
             public void onLiked(int position, String id, String uid, List<String> likeList, boolean isChecked) {
-                // Check if the current user is not the owner of the post
-                if (!uid.equals(user.getUid())) {
-                    // Someone other than the owner liked the post, create notification
-                    createNotification(uid, id);
-                }
+                // Kiểm tra xem người dùng hiện tại đã like bài viết trước đó hay không
+                boolean isPreviouslyLiked = likeList.contains(user.getUid());
 
+                // Cập nhật danh sách like trên Firestore
                 DocumentReference reference = FirebaseFirestore.getInstance().collection("Users")
                         .document(uid)
                         .collection("Post Images")
                         .document(id);
 
-                if (likeList.contains(user.getUid())) {
-                    likeList.remove(user.getUid()); // unlike
+                if (isChecked) {
+                    // Người dùng thích bài viết
+                    likeList.add(user.getUid()); // Thêm người dùng vào danh sách like
+                    if (!isPreviouslyLiked && !uid.equals(user.getUid())) {
+                        // Nếu bài viết chưa được người dùng hiện tại like trước đó và người dùng không phải là chủ sở hữu của bài viết
+                        createNotification(uid, id); // Tạo thông báo
+                    }
                 } else {
-                    likeList.add(user.getUid()); // like
+                    // Người dùng bỏ thích bài viết
+                    likeList.remove(user.getUid()); // Xóa người dùng khỏi danh sách like
                 }
 
+                // Cập nhật danh sách like trên Firestore
                 Map<String, Object> map = new HashMap<>();
                 map.put("likes", likeList);
-
                 reference.update(map);
             }
 
