@@ -21,6 +21,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.socialmediaapp.EditPostActivity;
 import com.example.socialmediaapp.ReplacerActivity;
 import com.example.socialmediaapp.model.HomeModel;
 import com.google.android.exoplayer2.util.Log;
@@ -204,7 +205,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
                             DeletePost(getAdapterPosition());
                             return true;
                         }
-
+                        if (itemId == R.id.action_edit) {
+                            EditPost(getAdapterPosition());
+                            return true;
+                        }
                         return false;
                     }
                 });
@@ -212,6 +216,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
 
             });
 
+        }
+
+        private void EditPost(int position) {
+            String userId = list.get(position).getUid(); // Lấy UID của người đăng bài
+            String postId = list.get(position).getId();
+            Intent intent = new Intent(context, EditPostActivity.class);
+            intent.putExtra("userId", userId); // userId là id của người đăng bài
+            intent.putExtra("postId", postId); // postId là id của bài đăng cần chỉnh sửa
+            context.startActivity(intent);
         }
 
         private void DeletePost(int position) {

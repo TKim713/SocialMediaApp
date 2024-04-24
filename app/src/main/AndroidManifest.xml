@@ -22,20 +22,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.example.socialmediaapp.chat.ChatUserActivity"
+            android:name=".EditPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".adapter.EditPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".chat.ChatUserActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.socialmediaapp.chat.ChatActivity"
+            android:name=".chat.ChatActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.socialmediaapp.ViewStoryActivity"
+            android:name=".ViewStoryActivity"
             android:exported="true" />
+        <activity android:name=".StoryAddActivity" />
+        <activity android:name=".ReplacerActivity" />
         <activity
-            android:name="com.example.socialmediaapp.StoryAddActivity"/>
-        <activity
-            android:name="com.example.socialmediaapp.ReplacerActivity"/>
-        <activity
-            android:name="com.example.socialmediaapp.PostViewActivity"
+            android:name=".PostViewActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -49,7 +53,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.socialmediaapp.MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -58,7 +62,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.socialmediaapp.SplashActivity"
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -66,7 +70,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
