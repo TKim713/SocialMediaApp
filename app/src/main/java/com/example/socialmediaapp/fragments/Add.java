@@ -63,6 +63,7 @@ public class Add extends Fragment {
     private List<GalleryImages> list;
     private GalleryAdapter adapter;
     private FirebaseUser user;
+    boolean addPost = true;
 
     public Add() {
         // Required empty public constructor
@@ -80,6 +81,8 @@ public class Add extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         init(view);
+
+        addPost = true;
 
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         recyclerView.setHasFixedSize(true);
@@ -195,7 +198,10 @@ public class Add extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        openFileChooser();
+        if (addPost) {
+            openFileChooser();
+            addPost = false;
+        }
     }
 
     // Method to check if the selected file is an image

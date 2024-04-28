@@ -183,6 +183,8 @@ public class Home extends Fragment {
                         }
                         // Gọi hàm để lấy bài post từ tất cả người dùng
                         loadPostsFromUsers(uidList);
+                        loadStories(uidList);
+                        scheduleStoryDeletion();
                     } else {
                         Log.d("Error: ", task.getException().getMessage());
                     }
@@ -192,6 +194,7 @@ public class Home extends Fragment {
         // Lấy bài post từ tất cả người dùng
         FirebaseFirestore.getInstance().collectionGroup("Post Images")
                 .whereIn("uid", uidList)
+                .orderBy("timestamp", Query.Direction.DESCENDING)
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
                         Log.d("Error: ", error.getMessage());
@@ -231,8 +234,6 @@ public class Home extends Fragment {
                     }
                     adapter.notifyDataSetChanged();
                 });
-        loadStories(uidList);
-        scheduleStoryDeletion();
     }
 
     void loadStories(List<String> followingList) {
