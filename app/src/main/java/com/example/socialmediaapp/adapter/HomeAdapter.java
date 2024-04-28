@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.socialmediaapp.EditPostActivity;
@@ -28,8 +29,10 @@ import com.google.android.exoplayer2.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.example.socialmediaapp.R;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -85,11 +88,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
 
         int color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256));
 
-        Glide.with(context.getApplicationContext())
-                .load(list.get(position).getProfileImage())
-                .placeholder(R.drawable.ic_person)
-                .timeout(6500)
-                .into(holder.profileImage);
+        fetchImageUrl(list.get(position).getUid(), holder);
 
         Glide.with(context.getApplicationContext())
                 .load(list.get(position).getImageUrl())
@@ -127,6 +126,30 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
         void onLiked(int position, String id, String uid, List<String> likeList, boolean isChecked);
 
         void setCommentCount(TextView textView);
+
+    }
+    void fetchImageUrl(String uid, HomeHolder holder) {
+
+        FirebaseFirestore.getInstance().collection("Users").document(uid)
+                .get().addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()) {
+
+                        DocumentSnapshot snapshot = task.getResult();
+
+                        Glide.with(context.getApplicationContext())
+                                .load(snapshot.getString("profileImage"))
+                                .placeholder(R.drawable.ic_person)
+                                .timeout(6500)
+                                .into(holder.profileImage);
+
+                    } else {
+                        assert task.getException() != null;
+                        Toast.makeText(context, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                });
+
 
     }
 

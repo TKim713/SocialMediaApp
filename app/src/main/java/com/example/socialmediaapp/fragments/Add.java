@@ -123,8 +123,6 @@ public class Add extends Fragment {
                 Toast.makeText(getContext(), "Please select an image first", Toast.LENGTH_SHORT).show();
             }
         });
-
-        openFileChooser();
     }
 
     // Method to open file chooser dialog
@@ -197,6 +195,7 @@ public class Add extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        openFileChooser();
     }
 
     // Method to check if the selected file is an image
