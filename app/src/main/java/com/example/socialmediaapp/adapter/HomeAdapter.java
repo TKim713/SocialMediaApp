@@ -149,12 +149,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
                     }
 
                 });
-
-
     }
 
     class HomeHolder extends RecyclerView.ViewHolder {
-
 
         private final CircleImageView profileImage;
         private final TextView userNameTv;
@@ -166,7 +163,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
         private final ImageButton commentBtn;
         private final ImageButton shareBtn;
         private final ImageButton edtPost;
-
 
         public HomeHolder(@NonNull View itemView) {
             super(itemView);
@@ -184,9 +180,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
 
             TextView commentTV = itemView.findViewById(R.id.commentTV);
 
-
             onPressed.setCommentCount(commentTV);
-
         }
 
         public void clickListener(final int position, final String id, String name, final String uid, final List<String> likes, final String imageUrl) {
@@ -282,7 +276,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
             {
                 likeCountTv.setText(String.valueOf(likeCount) + " likes");
             }
-
         }
     }
 }

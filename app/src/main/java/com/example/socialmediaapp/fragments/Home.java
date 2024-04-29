@@ -125,7 +125,7 @@ public class Home extends Fragment {
 
                     StringBuilder builder = new StringBuilder();
                     builder.append("See all ")
-                            .append(commentCount.getValue()-2)
+                            .append(commentCount.getValue())
                             .append(" comments");
 
                     textView.setText(builder);
@@ -224,13 +224,17 @@ public class Home extends Fragment {
                         snapshot.getReference().collection("Comments").get()
                                 .addOnCompleteListener(task -> {
                                     if (task.isSuccessful()) {
-                                        Map<String, Object> map = new HashMap<>();
-                                        for (QueryDocumentSnapshot commentSnapshot : task.getResult()) {
-                                            map = commentSnapshot.getData();
+                                        int commentCountValue = 0; // Default value
+                                        if (!task.getResult().isEmpty()) {
+                                            commentCountValue = task.getResult().size(); // Get the actual count if comments exist
                                         }
-                                        commentCount.setValue(map.size());
+                                        commentCount.setValue(commentCountValue);
+                                    } else {
+                                        // Handle error
+                                        Log.e("CommentCountError", "Failed to fetch comments", task.getException());
                                     }
                                 });
+
                     }
                     adapter.notifyDataSetChanged();
                 });
