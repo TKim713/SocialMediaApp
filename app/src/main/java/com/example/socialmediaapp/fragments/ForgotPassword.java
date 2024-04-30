@@ -2,12 +2,8 @@ package com.example.socialmediaapp.fragments;
 
 import static com.example.socialmediaapp.fragments.CreateAccountFragment.EMAIL_REGEX;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +13,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.socialmediaapp.ReplacerActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.example.socialmediaapp.LoginActivity;
+import com.example.socialmediaapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.example.socialmediaapp.R;
 
 
 public class ForgotPassword extends Fragment {
@@ -71,7 +71,12 @@ public class ForgotPassword extends Fragment {
         loginTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((ReplacerActivity) getActivity()).setFragment(new LoginFragment());
+                // Tạo Intent để chuyển từ CreateAccountFragment sang LoginActivity
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                // Khởi chạy LoginActivity
+                startActivity(intent);
+                // Kết thúc fragment hiện tại
+                getActivity().finish();
             }
         });
 
@@ -79,10 +84,10 @@ public class ForgotPassword extends Fragment {
             @Override
             public void onClick(View v) {
 
-                String email = emailEt.getText().toString();
+                String email = emailEt.getText().toString().trim();
 
                 if (email.isEmpty() || !email.matches(EMAIL_REGEX)){
-                    emailEt.setError("Input valid email");
+                    emailEt.setError("Invalid email format");
                     return;
                 }
 
@@ -94,7 +99,7 @@ public class ForgotPassword extends Fragment {
                             public void onComplete(@NonNull Task<Void> task) {
 
                                 if (task.isSuccessful()){
-                                    Toast.makeText(getContext(), "Password reset email send successfully",
+                                    Toast.makeText(getContext(), "Password reset email sent successfully",
                                             Toast.LENGTH_SHORT).show();
                                     emailEt.setText("");
                                 }else {
@@ -106,10 +111,9 @@ public class ForgotPassword extends Fragment {
 
                             }
                         });
-
-
             }
         });
+
 
     }
 }

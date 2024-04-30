@@ -1,7 +1,6 @@
 package com.example.socialmediaapp.fragments;
 
 import static android.app.Activity.RESULT_OK;
-
 import static com.example.socialmediaapp.MainActivity.IS_SEARCHED_USER;
 import static com.example.socialmediaapp.MainActivity.USER_ID;
 import static com.example.socialmediaapp.utils.Constants.PREF_DIRECTORY;
@@ -19,17 +18,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,12 +32,22 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.socialmediaapp.LoginActivity;
 import com.example.socialmediaapp.MainActivity;
+import com.example.socialmediaapp.R;
 import com.example.socialmediaapp.chat.ChatActivity;
 import com.example.socialmediaapp.model.PostImageModel;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -67,7 +65,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.example.socialmediaapp.R;
 import com.marsad.stylishdialogs.StylishAlertDialog;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -301,17 +298,13 @@ public class Profile extends Fragment {
         });
     }
 
-    void logout()
-    {
+    private void logout() {
         FirebaseAuth.getInstance().signOut();
-        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_profile, new LoginFragment());
-        fragmentTransaction.commit();
-
-//        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-//        transaction.replace(R.id.fragment_login, new LoginFragment());
-//        transaction.commit();
+        // Navigate to LoginActivity
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+        // Finish the current activity
+        getActivity().finish();
     }
 
     void queryChat() {
