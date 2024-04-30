@@ -628,7 +628,8 @@ public class Profile extends Fragment {
 
     private void uploadImage(Uri uri) {
 
-        final StorageReference reference = FirebaseStorage.getInstance().getReference().child("Profile Images");
+        String fileName = "profile_image_" + System.currentTimeMillis();
+        StorageReference reference = FirebaseStorage.getInstance().getReference().child("Profile Images/" + fileName);
 
         reference.putFile(uri)
                 .addOnCompleteListener(task -> {

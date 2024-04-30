@@ -29,6 +29,14 @@ public class NotificationModel {
         this.time = time;
     }
 
+    public NotificationModel(String id, String notification, String uid, String postId, Date time) {
+        this.id = id;
+        this.notification = notification;
+        this.uid = uid;
+        this.postId = postId;
+        this.time = time;
+    }
+
     public String getUid() {
         return uid;
     }

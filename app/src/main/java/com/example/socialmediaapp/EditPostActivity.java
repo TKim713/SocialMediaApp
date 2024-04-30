@@ -100,6 +100,8 @@ public class EditPostActivity extends AppCompatActivity {
                     // Cập nhật thành công
                     Toast.makeText(EditPostActivity.this, "Description updated successfully", Toast.LENGTH_SHORT).show();
                     // Kết thúc activity
+
+                    editDescription.setText(newDescription);
                     finish();
                 })
                 .addOnFailureListener(e -> {

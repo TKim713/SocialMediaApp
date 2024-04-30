@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.socialmediaapp.R;
 import com.example.socialmediaapp.adapter.NotificationAdapter;
 import com.example.socialmediaapp.model.NotificationModel;
+import com.google.android.exoplayer2.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -80,21 +82,27 @@ public class Notification extends Fragment {
         reference.whereEqualTo("uid", user.getUid())
                 .orderBy("time", Query.Direction.DESCENDING)
                 .addSnapshotListener((value, error) -> {
-
-                    if (error != null)
+                    if (error != null) {
+                        // Xử lý lỗi
+                        Log.e("Notification", "Error fetching notifications 1: " + error.getMessage());
+                        // Hiển thị thông báo lỗi cho người dùng
+                        Toast.makeText(getContext(), "Error fetching notifications 2", Toast.LENGTH_SHORT).show();
                         return;
+                    }
 
-                    if (value.isEmpty()) return;
+                    if (value.isEmpty()) {
+                        // Hiển thị thông báo rằng không có thông báo nào
+                        Log.d("Notification", "No notifications found 1");
+                        Toast.makeText(getContext(), "No notifications found 2", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
                     list.clear();
                     for (QueryDocumentSnapshot snapshot : value) {
-
                         NotificationModel model = snapshot.toObject(NotificationModel.class);
                         list.add(model);
-
                     }
                     adapter.notifyDataSetChanged();
-
                 });
     }
 }
