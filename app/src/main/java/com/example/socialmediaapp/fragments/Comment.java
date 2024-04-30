@@ -122,7 +122,8 @@ public class Comment extends Fragment {
 
     private void loadCommentData() {
 
-        reference.orderBy("time", Query.Direction.DESCENDING).addSnapshotListener((value, error) -> {
+        reference.orderBy("time", Query.Direction.DESCENDING)
+                .addSnapshotListener((value, error) -> {
 
             if (error != null)
                 return;
