@@ -12,6 +12,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.socialmediaapp.LoginActivity;
 import com.example.socialmediaapp.MainActivity;
 import com.example.socialmediaapp.R;

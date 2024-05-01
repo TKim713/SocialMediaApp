@@ -172,19 +172,22 @@ public class Home extends Fragment {
 
     private void loadDataFromFirestore() {
         // Lấy tất cả người dùng
-        FirebaseFirestore.getInstance().collection("Users")
+        FirebaseFirestore.getInstance().collection("Users").document(user.getUid())
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        List<DocumentSnapshot> userSnapshots = task.getResult().getDocuments();
-                        List<String> uidList = new ArrayList<>();
-                        for (DocumentSnapshot userSnapshot : userSnapshots) {
-                            uidList.add(userSnapshot.getId());
+                        DocumentSnapshot userSnapshot = task.getResult();
+                        List<String> followingList = (List<String>) userSnapshot.get("following");
+                        assert followingList != null;
+                        followingList.add(user.getUid());
+                        if (followingList != null && !followingList.isEmpty()) {
+                            // Gọi hàm để lấy bài post từ các người dùng mà người dùng hiện tại đang theo dõi
+                            loadPostsFromUsers(followingList);
+                            loadStories(followingList);
+                            scheduleStoryDeletion();
+                        } else {
+                            Log.d("Info: ", "No users followed by the current user.");
                         }
-                        // Gọi hàm để lấy bài post từ tất cả người dùng
-                        loadPostsFromUsers(uidList);
-                        loadStories(uidList);
-                        scheduleStoryDeletion();
                     } else {
                         Log.d("Error: ", task.getException().getMessage());
                     }
