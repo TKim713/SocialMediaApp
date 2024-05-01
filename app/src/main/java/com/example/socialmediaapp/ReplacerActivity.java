@@ -46,4 +46,5 @@ public class ReplacerActivity extends AppCompatActivity {
         fragmentTransaction.replace(frameLayout.getId(), fragment);
         fragmentTransaction.commit();
     }
+
 }

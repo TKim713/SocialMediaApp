@@ -279,8 +279,8 @@ public class Profile extends Fragment {
                     public boolean onMenuItemClick(MenuItem item) {
                         int itemId = item.getItemId();
                         if (itemId == R.id.action_logout) {
-                            toolbar.setVisibility(View.GONE);
-                            tabLayout.setVisibility(View.GONE);
+//                            toolbar.setVisibility(View.GONE);
+//                            tabLayout.setVisibility(View.GONE);
                             logout();
                             return true;
                         }
