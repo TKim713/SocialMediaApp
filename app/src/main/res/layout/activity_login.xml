@@ -13,7 +13,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="380dp"
         android:text="Login"
-        android:textColor="#EBD08D"
+        android:textColor="#3653CF"
         android:textSize="24sp"
         android:textStyle="bold"
         android:id="@+id/txtViewLogin"/>
@@ -57,8 +57,8 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:text="Forgot Password ?"
-            android:textColor="#EBD08D"
-            android:textStyle="bold" />
+            android:textColor="#3653CF"
+            android:textStyle="bold|italic" />
 
     </LinearLayout>
 
@@ -104,7 +104,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="26dp"
         android:text="Create Account, Sign Up"
-        android:textColor="#EBD08D"
+        android:textColor="#3653CF"
         android:textStyle="bold" />
 
 </RelativeLayout>

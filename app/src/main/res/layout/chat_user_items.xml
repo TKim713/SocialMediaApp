@@ -12,7 +12,7 @@
         android:layout_width="62dp"
         android:layout_height="62dp"
         android:src="@color/black"
-        app:civ_border_color="@color/colorGreenMid"
+        app:civ_border_color="@color/colorBlue"
         app:civ_border_width="3dp" />
 
     <TextView
@@ -46,7 +46,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginStart="4dp"
         android:text="Now"
-        android:textColor="@color/colorGreenLight" />
+        android:textColor="@color/colorBlue" />
 
     <TextView
         android:id="@+id/messageCountTV"
@@ -56,7 +56,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="4dp"
         android:background="@drawable/ic_circle"
-        android:backgroundTint="@color/colorGreenMid"
+        android:backgroundTint="@color/colorBlue"
         android:gravity="center"
         android:text="2"
         android:textColor="@color/white"

@@ -14,10 +14,12 @@
 
     <Button
         android:id="@+id/btn_save"
-        android:layout_width="wrap_content"
+        android:layout_width="121dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/edit_description"
         android:layout_marginTop="16dp"
-        android:text="Save" />
+        android:background="@drawable/btn_bg"
+        android:text="Save"
+        android:textColor="#FFFFFF" />
 
 </RelativeLayout>

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import com.example.socialmediaapp.fragments.Comment;
-import com.example.socialmediaapp.fragments.CreateAccountFragment;
 
 public class ReplacerActivity extends AppCompatActivity {
     private FrameLayout frameLayout;
