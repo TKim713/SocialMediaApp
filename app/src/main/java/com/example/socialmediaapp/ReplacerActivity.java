@@ -4,13 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import com.example.socialmediaapp.fragments.Comment;
 import com.example.socialmediaapp.fragments.CreateAccountFragment;
-import com.example.socialmediaapp.fragments.LoginFragment;
-import com.example.socialmediaapp.R;
 
 public class ReplacerActivity extends AppCompatActivity {
     private FrameLayout frameLayout;
@@ -26,8 +25,10 @@ public class ReplacerActivity extends AppCompatActivity {
 
         if (isComment)
             setFragment(new Comment());
-        else
-            setFragment(new LoginFragment());
+        else {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
     }
 
     public void setFragment(Fragment fragment) {

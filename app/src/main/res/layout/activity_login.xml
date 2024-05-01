@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
@@ -14,7 +13,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="380dp"
         android:text="Login"
-        android:textColor="#3653CF"
+        android:textColor="#EBD08D"
         android:textSize="24sp"
         android:textStyle="bold"
         android:id="@+id/txtViewLogin"/>
@@ -36,8 +35,8 @@
             android:background="@drawable/text_box"
             android:hint="Email"
             android:padding="12dp"
-            android:textColor="#3653CF"
-            android:textColorHint="#A6A6A6" />
+            android:textColor="#EBD08D"
+            android:textColorHint="#D9D9D9" />
 
         <EditText
             android:id="@+id/passwordET"
@@ -47,8 +46,8 @@
             android:background="@drawable/text_box"
             android:hint="Password"
             android:padding="12dp"
-            android:textColor="#3653CF"
-            android:textColorHint="#A6A6A6"/>
+            android:textColor="#EBD08D"
+            android:textColorHint="#D9D9D9" />
 
         <TextView
             android:id="@+id/forgotTV"
@@ -58,8 +57,8 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:text="Forgot Password ?"
-            android:textColor="#3653CF"
-            android:textStyle="bold|italic" />
+            android:textColor="#EBD08D"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -82,7 +81,7 @@
         android:layout_marginBottom="18dp"
         android:background="@drawable/btn_bg"
         android:text="Sign In"
-        android:textColor="#FFFFFF" />
+        android:textColor="#0C3073" />
 
     <Button
         android:id="@+id/googleSignInBtn"
@@ -94,7 +93,7 @@
         android:layout_marginBottom="18dp"
         android:background="@drawable/btn_bg"
         android:text="Sign In with Google"
-        android:textColor="#FFFFFF" />
+        android:textColor="#0C3073" />
 
 
     <TextView
@@ -105,7 +104,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="26dp"
         android:text="Create Account, Sign Up"
-        android:textColor="#3653CF"
+        android:textColor="#EBD08D"
         android:textStyle="bold" />
 
 </RelativeLayout>

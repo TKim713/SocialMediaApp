@@ -12,10 +12,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.example.socialmediaapp.LoginActivity;
 import com.example.socialmediaapp.MainActivity;
 import com.example.socialmediaapp.R;
@@ -82,12 +78,7 @@ public class CreateAccountFragment extends Fragment {
         loginTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Tạo Intent để chuyển từ CreateAccountFragment sang LoginActivity
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                // Khởi chạy LoginActivity
-                startActivity(intent);
-                // Kết thúc fragment hiện tại
-                getActivity().finish();
+                startActivity(new Intent(getActivity().getApplicationContext(), LoginActivity.class));
             }
         });
 
