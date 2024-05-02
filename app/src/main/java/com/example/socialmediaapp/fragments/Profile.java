@@ -462,7 +462,17 @@ public class Profile extends Fragment {
 
                 try {
 
-                    assert getContext() != null;
+                    if (getContext() == null) {
+                        Log.e("ProfileFragment", "getContext() is null");
+                        // Xử lý trường hợp getContext() trả về null
+                    } else {
+                        // Tiếp tục với logic của bạn ở đây
+                        editProfileBtn.setOnClickListener(v -> CropImage.activity()
+                                .setGuidelines(CropImageView.Guidelines.ON)
+                                .setAspectRatio(1, 1)
+                                .start(getContext(), Profile.this));
+                    }
+
 
                     Glide.with(getContext().getApplicationContext())
                             .load(profileURL)
