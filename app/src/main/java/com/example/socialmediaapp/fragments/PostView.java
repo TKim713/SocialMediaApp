@@ -1,5 +1,6 @@
 package com.example.socialmediaapp.fragments;
 
+import static com.example.socialmediaapp.MainActivity.IS_SEARCHED_USER;
 import static com.example.socialmediaapp.MainActivity.POST_ID;
 import static com.example.socialmediaapp.MainActivity.USER_ID;
 import static com.example.socialmediaapp.MainActivity.VIEW_POST;
@@ -29,6 +30,8 @@ import com.example.socialmediaapp.adapter.HomeAdapter;
 import com.example.socialmediaapp.adapter.PostViewAdapter;
 import com.example.socialmediaapp.chat.ChatUserActivity;
 import com.example.socialmediaapp.model.HomeModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
@@ -43,12 +46,11 @@ import java.util.Map;
 public class PostView extends Fragment {
 
     String userUID, postID;
-    private final MutableLiveData<Integer> commentCount = new MutableLiveData<>();
     PostViewAdapter postViewAdapter;
     RecyclerView recyclerView;
     private List<HomeModel> list;
     Activity activity;
-    ImageButton commentBtn;
+    private FirebaseUser user;
 
     public PostView() {
         // Required empty public constructor
@@ -80,57 +82,32 @@ public class PostView extends Fragment {
 
         loadPostsFromUsers();
 
-        postViewAdapter.OnPressed(new PostViewAdapter.OnPressed() {
-            @Override
-            public void onLiked(int position, String id, String uid, List<String> likeList, boolean isChecked) {
-                // Kiểm tra xem người dùng hiện tại đã like bài viết trước đó hay không
-                boolean isPreviouslyLiked = likeList.contains(userUID);
+        postViewAdapter.OnPressed((position, id, uid, likeList, isChecked) -> {
+            // Kiểm tra xem người dùng hiện tại đã like bài viết trước đó hay không
+            boolean isPreviouslyLiked = likeList.contains(userUID);
 
-                // Cập nhật danh sách like trên Firestore
-                DocumentReference reference = FirebaseFirestore.getInstance().collection("Users")
-                        .document(uid)
-                        .collection("Post Images")
-                        .document(id);
+            // Cập nhật danh sách like trên Firestore
+            DocumentReference reference = FirebaseFirestore.getInstance().collection("Users")
+                    .document(uid)
+                    .collection("Post Images")
+                    .document(id);
 
-                if (isChecked) {
-                    // Người dùng thích bài viết
-                    likeList.add(userUID); // Thêm người dùng vào danh sách like
-                    if (!isPreviouslyLiked && !uid.equals(userUID)) {
-                        // Nếu bài viết chưa được người dùng hiện tại like trước đó và người dùng không phải là chủ sở hữu của bài viết
-                        createNotification(uid, id); // Tạo thông báo
-                    }
-                } else {
-                    // Người dùng bỏ thích bài viết
-                    likeList.remove(userUID); // Xóa người dùng khỏi danh sách like
+            if (isChecked) {
+                // Người dùng thích bài viết
+                likeList.add(userUID); // Thêm người dùng vào danh sách like
+                if (!isPreviouslyLiked && !uid.equals(userUID)) {
+                    // Nếu bài viết chưa được người dùng hiện tại like trước đó và người dùng không phải là chủ sở hữu của bài viết
+                    createNotification(uid, id); // Tạo thông báo
                 }
-
-                // Cập nhật danh sách like trên Firestore
-                Map<String, Object> map = new HashMap<>();
-                map.put("likes", likeList);
-                reference.update(map);
+            } else {
+                // Người dùng bỏ thích bài viết
+                likeList.remove(userUID); // Xóa người dùng khỏi danh sách like
             }
 
-            @Override
-            public void setCommentCount(final TextView textView) {
-
-                commentCount.observe((LifecycleOwner) activity, integer -> {
-
-                    assert commentCount.getValue() != null;
-
-                    if (commentCount.getValue() == 0) {
-                        textView.setVisibility(View.GONE);
-                    } else
-                        textView.setVisibility(View.VISIBLE);
-
-                    StringBuilder builder = new StringBuilder();
-                    builder.append("See all ")
-                            .append(commentCount.getValue()-2)
-                            .append(" comments");
-
-                    //textView.setText(builder);
-//                    textView.setText("See all " + commentCount.getValue() + " comments");
-                });
-            }
+            // Cập nhật danh sách like trên Firestore
+            Map<String, Object> map = new HashMap<>();
+            map.put("likes", likeList);
+            reference.update(map);
         });
         view.findViewById(R.id.sendBtn).setOnClickListener(v -> {
 
@@ -142,7 +119,8 @@ public class PostView extends Fragment {
 
     void init(View view) {
 
-        commentBtn = view.findViewById(R.id.commentBtn);
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -187,17 +165,6 @@ public class PostView extends Fragment {
                                                     model.getTimestamp(),
                                                     model.getLikes()));
                                         }
-
-                                        snapshot.getReference().collection("Comments").get()
-                                                .addOnCompleteListener(task1 -> {
-                                                    if (task1.isSuccessful()) {
-                                                        Map<String, Object> map = new HashMap<>();
-                                                        for (QueryDocumentSnapshot commentSnapshot : task1.getResult()) {
-                                                            map = commentSnapshot.getData();
-                                                        }
-                                                        commentCount.setValue(map.size());
-                                                    }
-                                                });
                                     }
                                     if (selectedPost != null) {
                                         list.add(0, selectedPost);

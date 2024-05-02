@@ -124,9 +124,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
 
     public interface OnPressed {
         void onLiked(int position, String id, String uid, List<String> likeList, boolean isChecked);
-
-        void setCommentCount(TextView textView);
-
     }
     void fetchImageUrl(String uid, HomeHolder holder) {
 
@@ -177,10 +174,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
             shareBtn = itemView.findViewById(R.id.shareBtn);
             descriptionTv = itemView.findViewById(R.id.descTv);
             edtPost = itemView.findViewById(R.id.editPost);
-
-            TextView commentTV = itemView.findViewById(R.id.commentTV);
-
-            onPressed.setCommentCount(commentTV);
         }
 
         public void clickListener(final int position, final String id, String name, final String uid, final List<String> likes, final String imageUrl) {

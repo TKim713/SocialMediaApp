@@ -108,16 +108,4 @@
         android:layout_below="@id/likeCountTv"
         android:textStyle="bold" />
 
-
-
-    <TextView
-        android:id="@+id/commentTV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/likeCountTv"
-        android:layout_marginTop="15dp"
-        android:padding="8dp"
-        android:text="View all comment"
-        android:visibility="gone"/>
-
 </RelativeLayout>

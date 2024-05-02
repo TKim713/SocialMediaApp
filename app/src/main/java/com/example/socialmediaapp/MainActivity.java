@@ -96,8 +96,11 @@ public class MainActivity extends AppCompatActivity implements Search.OnDataPass
                 // Nếu đang xem trang cá nhân của người dùng khác và chuyển sang các trang khác
                 if (IS_SEARCHED_USER && position != 4) {
                     // Reset trang cá nhân của người dùng hiện tại
-                    resetCurrentUserProfile();
+                    IS_SEARCHED_USER = false;
                 }
+//                if (VIEW_POST && position != 0) {
+//                    VIEW_POST = false;
+//                }
             }
 
             @Override
@@ -115,6 +118,9 @@ public class MainActivity extends AppCompatActivity implements Search.OnDataPass
                 viewPager.setCurrentItem(tab.getPosition());
 
                 switch (tab.getPosition()) {
+
+                    default:
+                        break;
 
                     case 0:
 //                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_home_fill);
@@ -138,10 +144,10 @@ public class MainActivity extends AppCompatActivity implements Search.OnDataPass
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
 
-                IS_SEARCHED_USER = false;
-                VIEW_POST = false;
-
                 switch (tab.getPosition()) {
+
+                    default:
+                        break;
 
                     case 0:
                         tab.setIcon(R.drawable.ic_home);
@@ -165,6 +171,9 @@ public class MainActivity extends AppCompatActivity implements Search.OnDataPass
             public void onTabReselected(TabLayout.Tab tab) {
 
                 switch (tab.getPosition()) {
+
+                    default:
+                        break;
 
                     case 0:
                         tab.setIcon(R.drawable.ic_home_fill);
@@ -198,11 +207,6 @@ public class MainActivity extends AppCompatActivity implements Search.OnDataPass
         }
 
     }
-    private void resetCurrentUserProfile() {
-        // Thực hiện các thao tác cần thiết để reset trang cá nhân của người dùng hiện tại
-        IS_SEARCHED_USER = false;
-        // Cập nhật trạng thái của tab hoặc các tùy chọn khác tùy thuộc vào nhu cầu của bạn
-    }
 
     @Override
     public void onChange(String uid) {
@@ -225,6 +229,9 @@ public class MainActivity extends AppCompatActivity implements Search.OnDataPass
         if (viewPager.getCurrentItem() == 4) {
             viewPager.setCurrentItem(0);
             IS_SEARCHED_USER = false;
+        }
+        else if (viewPager.getCurrentItem() == 0 && VIEW_POST) {
+            viewPager.setCurrentItem(4);
             VIEW_POST = false;
         } else
             super.onBackPressed();

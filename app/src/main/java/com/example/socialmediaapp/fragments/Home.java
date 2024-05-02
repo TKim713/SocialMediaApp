@@ -81,59 +81,32 @@ public class Home extends Fragment {
 
         loadDataFromFirestore();
 
-        adapter.OnPressed(new HomeAdapter.OnPressed() {
-            @Override
-            public void onLiked(int position, String id, String uid, List<String> likeList, boolean isChecked) {
-                // Kiểm tra xem người dùng hiện tại đã like bài viết trước đó hay không
-                boolean isPreviouslyLiked = likeList.contains(user.getUid());
+        adapter.OnPressed((position, id, uid, likeList, isChecked) -> {
+            // Kiểm tra xem người dùng hiện tại đã like bài viết trước đó hay không
+            boolean isPreviouslyLiked = likeList.contains(user.getUid());
 
-                // Cập nhật danh sách like trên Firestore
-                DocumentReference reference = FirebaseFirestore.getInstance().collection("Users")
-                        .document(uid)
-                        .collection("Post Images")
-                        .document(id);
+            // Cập nhật danh sách like trên Firestore
+            DocumentReference reference = FirebaseFirestore.getInstance().collection("Users")
+                    .document(uid)
+                    .collection("Post Images")
+                    .document(id);
 
-                if (isChecked) {
-                    // Người dùng thích bài viết
-                    likeList.add(user.getUid()); // Thêm người dùng vào danh sách like
-                    if (!isPreviouslyLiked && !uid.equals(user.getUid())) {
-                        // Nếu bài viết chưa được người dùng hiện tại like trước đó và người dùng không phải là chủ sở hữu của bài viết
-                        createNotification(uid, id); // Tạo thông báo
-                    }
-                } else {
-                    // Người dùng bỏ thích bài viết
-                    likeList.remove(user.getUid()); // Xóa người dùng khỏi danh sách like
+            if (isChecked) {
+                // Người dùng thích bài viết
+                likeList.add(user.getUid()); // Thêm người dùng vào danh sách like
+                if (!isPreviouslyLiked && !uid.equals(user.getUid())) {
+                    // Nếu bài viết chưa được người dùng hiện tại like trước đó và người dùng không phải là chủ sở hữu của bài viết
+                    createNotification(uid, id); // Tạo thông báo
                 }
-
-                // Cập nhật danh sách like trên Firestore
-                Map<String, Object> map = new HashMap<>();
-                map.put("likes", likeList);
-                reference.update(map);
+            } else {
+                // Người dùng bỏ thích bài viết
+                likeList.remove(user.getUid()); // Xóa người dùng khỏi danh sách like
             }
 
-            @Override
-            public void setCommentCount(final TextView textView) {
-
-                commentCount.observe((LifecycleOwner) activity, integer -> {
-
-                    assert commentCount.getValue() != null;
-
-                    if (commentCount.getValue() == 0) {
-                        textView.setVisibility(View.GONE);
-                    } else
-                        textView.setVisibility(View.VISIBLE);
-
-                    StringBuilder builder = new StringBuilder();
-                    builder.append("See all ")
-                            .append(commentCount.getValue())
-                            .append(" comments");
-
-                    //textView.setText(builder);
-//                    textView.setText("See all " + commentCount.getValue() + " comments");
-
-                });
-
-            }
+            // Cập nhật danh sách like trên Firestore
+            Map<String, Object> map = new HashMap<>();
+            map.put("likes", likeList);
+            reference.update(map);
         });
 
         view.findViewById(R.id.sendBtn).setOnClickListener(v -> {
@@ -223,21 +196,6 @@ public class Home extends Fragment {
                                 model.getId(),
                                 model.getTimestamp(),
                                 model.getLikes()));
-
-                        snapshot.getReference().collection("Comments").get()
-                                .addOnCompleteListener(task -> {
-                                    if (task.isSuccessful()) {
-                                        int commentCountValue = 0; // Default value
-                                        if (!task.getResult().isEmpty()) {
-                                            commentCountValue = task.getResult().size(); // Get the actual count if comments exist
-                                        }
-                                        commentCount.setValue(commentCountValue);
-                                    } else {
-                                        // Handle error
-                                        Log.e("CommentCountError", "Failed to fetch comments", task.getException());
-                                    }
-                                });
-
                     }
                     adapter.notifyDataSetChanged();
                 });

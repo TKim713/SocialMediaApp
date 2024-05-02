@@ -40,6 +40,7 @@ public class PostViewAdapter extends RecyclerView.Adapter<PostViewAdapter.PostVi
     private final List<HomeModel> list;
     Activity context;
     OnPressed onPressed;
+
     public PostViewAdapter(List<HomeModel> list, Activity context) {
         this.list = list;
         this.context = context;
@@ -48,12 +49,12 @@ public class PostViewAdapter extends RecyclerView.Adapter<PostViewAdapter.PostVi
     @Override
     public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_items, parent, false);
-        return new PostViewAdapter.PostViewHolder(view);
+        return new PostViewHolder(view);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull PostViewAdapter.PostViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -118,9 +119,6 @@ public class PostViewAdapter extends RecyclerView.Adapter<PostViewAdapter.PostVi
 
     public interface OnPressed {
         void onLiked(int position, String id, String uid, List<String> likeList, boolean isChecked);
-
-        void setCommentCount(TextView textView);
-
     }
 
     void fetchImageUrl(String uid, PostViewHolder holder) {
@@ -172,10 +170,6 @@ public class PostViewAdapter extends RecyclerView.Adapter<PostViewAdapter.PostVi
             shareBtn = itemView.findViewById(R.id.shareBtn);
             descriptionTv = itemView.findViewById(R.id.descTv);
             edtPost = itemView.findViewById(R.id.editPost);
-
-            TextView commentTV = itemView.findViewById(R.id.commentTV);
-
-            onPressed.setCommentCount(commentTV);
         }
 
         public void clickListener(final int position, final String id, String name, final String uid, final List<String> likes, final String imageUrl) {
