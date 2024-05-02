@@ -94,13 +94,13 @@ public class MainActivity extends AppCompatActivity implements Search.OnDataPass
             @Override
             public void onPageSelected(int position) {
                 // Nếu đang xem trang cá nhân của người dùng khác và chuyển sang các trang khác
-                if (IS_SEARCHED_USER && position != 4) {
+                if (IS_SEARCHED_USER && position != 4 && position != 0 && !VIEW_POST) {
                     // Reset trang cá nhân của người dùng hiện tại
                     IS_SEARCHED_USER = false;
                 }
-//                if (VIEW_POST && position != 0) {
-//                    VIEW_POST = false;
-//                }
+                if (VIEW_POST && position != 0) {
+                    VIEW_POST = false;
+                }
             }
 
             @Override
@@ -230,9 +230,13 @@ public class MainActivity extends AppCompatActivity implements Search.OnDataPass
             viewPager.setCurrentItem(0);
             IS_SEARCHED_USER = false;
         }
-        else if (viewPager.getCurrentItem() == 0 && VIEW_POST) {
-            viewPager.setCurrentItem(4);
-            VIEW_POST = false;
+        else if (viewPager.getCurrentItem() == 0) {
+            if (VIEW_POST && IS_SEARCHED_USER) {
+                viewPager.setCurrentItem(4);
+            } else {
+                viewPager.setCurrentItem(4);
+                VIEW_POST = false;
+            }
         } else
             super.onBackPressed();
     }
