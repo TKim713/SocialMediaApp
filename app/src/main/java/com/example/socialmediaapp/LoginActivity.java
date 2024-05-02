@@ -2,7 +2,9 @@ package com.example.socialmediaapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +39,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginBtn, googleSignInBtn;
     private ProgressBar progressBar;
 
+    boolean passswordVisible  = false;
+
     private static final int RC_SIGN_IN = 1;
     GoogleSignInClient mGoogleSignInClient;
 
@@ -69,6 +73,31 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        passwordEt.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                final int DRAWABLE_RIGHT = 2;
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (passwordEt.getRight() - passwordEt.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        // Xử lý sự kiện khi người dùng nhấn vào DrawableRight
+                        if (passswordVisible) {
+                            // Nếu mật khẩu đang hiển thị, ẩn nó đi và chuyển biểu tượng thành ic_blind_eye
+                            passwordEt.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                            passwordEt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_blind_eye, 0);
+                            passswordVisible = false;
+                        } else {
+                            // Nếu mật khẩu đang ẩn, hiển thị nó và chuyển biểu tượng thành ic_eye_show
+                            passwordEt.setInputType(InputType.TYPE_CLASS_TEXT);
+                            passwordEt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_eye_show, 0);
+                            passswordVisible = true;
+                        }
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     private void clickListener() {

@@ -38,6 +38,8 @@
             android:textColor="#3653CF"
             android:textColorHint="#D9D9D9" />
 
+
+
         <EditText
             android:id="@+id/passwordET"
             android:layout_width="match_parent"
@@ -47,6 +49,8 @@
             android:hint="Password"
             android:padding="12dp"
             android:textColor="#3653CF"
+            android:drawableRight="@drawable/ic_blind_eye"
+            android:inputType="textPassword"
             android:textColorHint="#D9D9D9" />
 
         <TextView
