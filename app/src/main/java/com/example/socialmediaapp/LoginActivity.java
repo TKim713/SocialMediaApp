@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText emailEt, passwordEt;
     private TextView signUpTv, forgotPasswordTv;
-    private Button loginBtn, googleSignInBtn;
+    private Button loginBtn;
     private ProgressBar progressBar;
 
     boolean passswordVisible  = false;
@@ -60,7 +60,6 @@ public class LoginActivity extends AppCompatActivity {
         emailEt = findViewById(R.id.emailET);
         passwordEt = findViewById(R.id.passwordET);
         loginBtn = findViewById(R.id.loginBtn);
-        googleSignInBtn = findViewById(R.id.googleSignInBtn);
         signUpTv = findViewById(R.id.signUpTV);
         forgotPasswordTv = findViewById(R.id.forgotTV);
         progressBar = findViewById(R.id.progressBar);
@@ -154,12 +153,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        googleSignInBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
+
 
         signUpTv.setOnClickListener(new View.OnClickListener() {
             @Override

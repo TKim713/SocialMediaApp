@@ -83,17 +83,10 @@ public class Notification extends Fragment {
                 .orderBy("time", Query.Direction.DESCENDING)
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
-                        // Xử lý lỗi
-                        Log.e("Notification", "Error fetching notifications 1: " + error.getMessage());
-                        // Hiển thị thông báo lỗi cho người dùng
-                        Toast.makeText(getContext(), "Error fetching notifications 2", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     if (value.isEmpty()) {
-                        // Hiển thị thông báo rằng không có thông báo nào
-                        Log.d("Notification", "No notifications found 1");
-                        Toast.makeText(getContext(), "No notifications found 2", Toast.LENGTH_SHORT).show();
                         return;
                     }
 

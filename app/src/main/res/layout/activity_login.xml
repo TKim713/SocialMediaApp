@@ -79,24 +79,12 @@
         android:id="@+id/loginBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/googleSignInBtn"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="18dp"
-        android:background="@drawable/btn_bg"
-        android:text="Sign In"
-        android:textColor="#FFFFFF" />
-
-    <Button
-        android:id="@+id/googleSignInBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_above="@id/signUpTV"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="18dp"
         android:background="@drawable/btn_bg"
-        android:text="Sign In with Google"
+        android:text="Sign In"
         android:textColor="#FFFFFF" />
 
 
