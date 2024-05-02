@@ -128,7 +128,7 @@ public class Home extends Fragment {
                             .append(commentCount.getValue())
                             .append(" comments");
 
-                    textView.setText(builder);
+                    //textView.setText(builder);
 //                    textView.setText("See all " + commentCount.getValue() + " comments");
 
                 });

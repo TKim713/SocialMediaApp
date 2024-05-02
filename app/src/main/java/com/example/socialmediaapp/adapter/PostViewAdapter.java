@@ -1,10 +1,5 @@
 package com.example.socialmediaapp.adapter;
 
-import static java.security.AccessController.getContext;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -21,45 +16,44 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.socialmediaapp.EditPostActivity;
+import com.example.socialmediaapp.R;
 import com.example.socialmediaapp.ReplacerActivity;
 import com.example.socialmediaapp.model.HomeModel;
 import com.google.android.exoplayer2.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.example.socialmediaapp.R;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
+public class PostViewAdapter extends RecyclerView.Adapter<PostViewAdapter.PostViewHolder> {
 
     private final List<HomeModel> list;
     Activity context;
     OnPressed onPressed;
-
-
-    public HomeAdapter(List<HomeModel> list, Activity context) {
+    public PostViewAdapter(List<HomeModel> list, Activity context) {
         this.list = list;
         this.context = context;
     }
-
     @NonNull
     @Override
-    public HomeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_items, parent, false);
-        return new HomeHolder(view);
+        return new PostViewAdapter.PostViewHolder(view);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull HomeHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PostViewAdapter.PostViewHolder holder, int position) {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -128,7 +122,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
         void setCommentCount(TextView textView);
 
     }
-    void fetchImageUrl(String uid, HomeHolder holder) {
+
+    void fetchImageUrl(String uid, PostViewHolder holder) {
 
         FirebaseFirestore.getInstance().collection("Users").document(uid)
                 .get().addOnCompleteListener(task -> {
@@ -151,7 +146,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
                 });
     }
 
-    class HomeHolder extends RecyclerView.ViewHolder {
+    class PostViewHolder extends RecyclerView.ViewHolder {
 
         private final CircleImageView profileImage;
         private final TextView userNameTv;
@@ -164,7 +159,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
         private final ImageButton shareBtn;
         private final ImageButton edtPost;
 
-        public HomeHolder(@NonNull View itemView) {
+        public PostViewHolder(@NonNull View itemView) {
             super(itemView);
 
             profileImage = itemView.findViewById(R.id.profileImage);

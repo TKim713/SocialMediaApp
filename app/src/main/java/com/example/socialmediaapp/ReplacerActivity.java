@@ -35,10 +35,6 @@ public class ReplacerActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 
-        if (fragment instanceof CreateAccountFragment) {
-            fragmentTransaction.addToBackStack(null);
-        }
-
         if (fragment instanceof Comment){
 
             String id = getIntent().getStringExtra("id");
