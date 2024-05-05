@@ -13,7 +13,7 @@
         android:textSize="24sp"
         android:text="Create Account"
         android:textColor="#3653CF"
-        android:layout_marginTop="380dp"
+        android:layout_marginTop="350dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:id="@+id/txtCreateAccount"/>
@@ -58,7 +58,8 @@
             android:hint="Password"
             android:padding="12dp"
             android:textColorHint="#A6A6A6"
-            android:textColor="#3653CF"/>
+            android:textColor="#3653CF"
+            android:inputType="textPassword"/>
 
         <EditText
             android:id="@+id/confirmPassET"
@@ -69,7 +70,8 @@
             android:hint="Confirm Password"
             android:padding="12dp"
             android:textColor="#3653CF"
-            android:textColorHint="#A6A6A6" />
+            android:textColorHint="#A6A6A6"
+            android:inputType="textPassword"/>
 
     </LinearLayout>
 
